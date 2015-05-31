@@ -2,3 +2,5 @@
 deploy_credentials.json
 dist/
 node_modules/
+composer.lock
+src/vendor
