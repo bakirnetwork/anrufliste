@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Bakir Immobilien Anrufe</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="http://d2v52k3cl9vedd.cloudfront.net/basscss/6.1.6/basscss.min.css" rel="stylesheet">
-</head>
-<body style="background-color: #f4f4f4">
-	<!--[if lt IE 10]><p class="p2 m0 center white bg-orange">Sie benutzen einen <strong>veralteten</strong> Browser. Bitte <a class="white" style="text-decoration: underline;" href="http://browsehappy.com/">aktualisieren Sie ihren Browser</a> um das Internet-Erlebnis zu verbessern.</p><![endif]-->
+{% extends 'base.twig' %}
+
+{% block content %}
 
 	<header class="clearfix p2 white mb3" style="background-color: #e9399b;">
 		<h1 class="col h3 m0" style="margin-top: .3rem;">Bakir Immobilien Anrufe</h1>
@@ -114,5 +106,5 @@
 			</form>
 		</div>
 	</div>
-</body>
-</html>
+
+{% endblock %}
