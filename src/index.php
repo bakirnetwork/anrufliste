@@ -7,4 +7,4 @@ $twig = new Twig_Environment($loader);
 
 // variables and arrays to use in the template go here
 $context = array('foo' => 'bar');
-echo $twig->render('index.twig', $context);
+echo $twig->render('home.twig', $context);
