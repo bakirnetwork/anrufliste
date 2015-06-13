@@ -11,11 +11,13 @@ module.exports = function(grunt) {
 
 		copy: {
 			main: {
-				expand: true,
-				cwd: 'src',
-				src: '**',
-				dest: 'dist/',
-			},
+				files: [ {
+					expand: true,
+					src: ['src/**'],
+					dest: 'dist/'
+					}
+				]
+			} 
 		},
 
 		watch: {
