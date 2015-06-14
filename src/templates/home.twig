@@ -1,12 +1,95 @@
 {% extends 'base.twig' %}
 
+{% block head %}
+	<style>
+		.mdl-modal {
+			position: absolute;
+			top: 50%;
+			right: 50%;
+			left: 50%;
+			z-index: 2000;
+			width: 90%;
+			max-width: 650px;
+			visibility: hidden;
+			-webkit-transform: translateX(-50%) translateY(-50%);
+			-ms-transform:     translateX(-50%) translateY(-50%);
+			transform:         translateX(-50%) translateY(-50%);
+		}
+
+		.mdl-modal.mdl-show {
+			visibility: visible;
+		}
+
+		.mdl-overlay {
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 1000;
+			background: rgba(0,0,0,0.5);
+			visibility: hidden;
+			opacity: 0;
+			-webkit-transition: all .6s;
+			transition: all .6s;
+		}
+
+		.mdl-show ~ .mdl-overlay {
+			visibility: visible;
+			opacity: 1;
+		}
+
+		.mdl-box {
+			position: relative;
+			border-radius: 5px;
+			overflow: hidden;
+			opacity: 0;
+			-webkit-transform: scale(0.7);
+			-ms-transform:     scale(0.7);
+			transform:         scale(0.7);
+			-webkit-transition: all .6s;
+			transition: all .6s;
+		}
+
+		.mdl-modal.mdl-show > .mdl-box {
+			opacity: 1;
+			-webkit-transform: scale(1);
+			-ms-transform:     scale(1);
+			transform:         scale(1);
+		}
+
+	</style>
+{% endblock %}
+
+{% block foot %}
+
+	<script>
+
+		var modal = document.getElementById('new-call-modal');
+
+		function toggleModal() {
+			modal.classList.toggle('mdl-show');
+		}
+
+		function hideModal() {
+			modal.classList.remove('mdl-show');
+		}
+
+		document.getElementById('new-call').onclick = function() { toggleModal(); };
+		document.getElementById('overlay').onclick  = function() { hideModal(); };
+		document.getElementById('cancel').onclick   = function() { hideModal(); };
+
+	</script>
+
+{% endblock %}
+
 {% block content %}
 
 	<header class="clearfix p2 white mb3" style="background-color: #e9399b;">
 		<h1 class="col h3 m0" style="margin-top: .3rem;">Bakir Immobilien Anrufe</h1>
 		<nav class="col-right">
 			<a class="button" style="background: none;" href="#">Max Mustermann abmelden</a>
-			<a class="button bg-white" style="color: #e9399b;" href="#">Neuer Anruf</a>
+			<button class="button bg-white" id="new-call" style="color: #e9399b;">Neuer Anruf</button>
 		</nav>
 	</header>
 
@@ -53,8 +136,8 @@
 		</div>
 	</div>
 
-	<div class="container">
-		<div class="sm-col-8 mx-auto p3 border rounded bg-white">
+	<div class="mdl-modal" id="new-call-modal">
+		<div class="p3 border rounded bg-white mdl-box">
 
 			<h3 class="mt0 mb3">Neuer Anruf</h3>
 
@@ -100,11 +183,14 @@
 
 				<div class="mt3">
 					<a class="button" href="#">Fertig</a>
-					<a class="button bg-gray" href="#">Abbrechen</a>
+					<button class="button bg-gray" id="cancel">Abbrechen</button>
 				</div>
 
 			</form>
 		</div>
+
 	</div>
+
+	<div id="overlay" class="mdl-overlay"></div>
 
 {% endblock %}
