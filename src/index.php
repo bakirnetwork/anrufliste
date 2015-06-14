@@ -1,5 +1,7 @@
 <?php
 
+header('Content-Type: text/html; charset=utf-8');
+
 require(__DIR__ . '/vendor/autoload.php');
 require(__DIR__ . '/bakir-anrufliste-config.php');
 require(__DIR__ . '/calls.php');
