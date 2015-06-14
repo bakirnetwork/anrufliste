@@ -2,7 +2,11 @@
     "config": {
         "vendor-dir": "src/vendor"
     },
+    "repositories": [
+        { "type": "vcs", "url": "https://github.com/Extendgears/php-components.git" }
+    ],
     "require": {
-        "twig/twig": "^1.18"
+        "twig/twig": "^1.18",
+        "extendgears/php-components": "dev-master"
     }
 }

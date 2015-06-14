@@ -4,3 +4,4 @@ dist/
 node_modules/
 composer.lock
 src/vendor
+src/php-components-config.php
