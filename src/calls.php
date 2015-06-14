@@ -19,7 +19,7 @@ function getCallArray() {
 					'vorname'  => $row['contact_forname'],
 					'nachname' => $row['contact_lastname'],
 					'telefon'  => $row['contact_phone'],
-					'datum'    => date('j. M, h:i', strtotime($row['call_date'])),
+					'datum'    => getDateString(strtotime($row['call_date'])),
 					'betreff'  => $row['call_subject'],
 					'personen' => getAssignedUserIDs($row['id'])
 				);
@@ -43,12 +43,13 @@ function getDoneCallArray() {
 	if ($calls != NULL) {
 		while($row = $calls->fetch_array()) {
 			if ($row['done_date'] != NULL) {
+								
 				$callArray[] = array(
 					'id'       => $row['id'],
 					'vorname'  => $row['contact_forname'],
 					'nachname' => $row['contact_lastname'],
 					'telefon'  => $row['contact_phone'],
-					'datum'    => date('j. M, h:i', strtotime($row['call_date'])),
+					'datum'    => getDateString(strtotime($row['call_date'])),
 					'betreff'  => $row['call_subject'],
 					'personen' => getAssignedUserIDs($row['id'])
 				);
@@ -57,6 +58,30 @@ function getDoneCallArray() {
 	}
 
 	return $callArray;
+}
+
+function getDateString($call_time) {
+
+	$etime = time() - $call_time;
+
+	$a = array(
+		365 * 24 * 60 * 60 => array('Jahr', 'Jahren'),
+		 30 * 24 * 60 * 60 => array('Monat', 'Monaten'),
+		  7 * 24 * 60 * 60 => array('Woche', 'Wochen'),
+		      24 * 60 * 60 => array('Tag', 'Tagen'),
+		           60 * 60 => array('Stunde', 'Stunden'),
+		                60 => array('Minute', 'Minuten')
+	);
+
+	foreach ($a as $secs => $str) {
+		$d = $etime / $secs;
+		if ($d >= 1) {
+			$r = round($d);
+			return 'Vor ' . $r . ' ' . ($r > 1 ? $str[1] : $str[0]);
+		}
+	}
+	
+	return 'Gerade eben';
 }
 
 function getAssignedUserIDs($call_id) {
