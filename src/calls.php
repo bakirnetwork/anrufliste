@@ -58,6 +58,8 @@ function getDoneCallArray() {
 }
 
 function getAssignedUserIDs($call_id) {
+	initTable(DB_PREFIX.DB_ASSIGNMENTS, SQL_ASSIGNMENTS);
+
 	$query = 'SELECT user_id FROM '.DB_PREFIX.DB_ASSIGNMENTS.' WHERE call_id='.$call_id;
 	$assignments = queryMySQLData($query);
 
@@ -71,6 +73,8 @@ function getAssignedUserIDs($call_id) {
 }
 
 function getAssignedUserNames($call_id) {
+	initTable(DB_PREFIX.DB_ASSIGNMENTS, SQL_ASSIGNMENTS);
+
 	$query = 'SELECT user_id FROM '.DB_PREFIX.DB_ASSIGNMENTS.' WHERE call_id='.$call_id;
 	$result = queryMySQLData($query);
 
