@@ -19,9 +19,13 @@ if (isset($_GET['logout'])) {
 
 if (isset($_GET['login'])) {
 	if (isset($_POST['username']) && isset($_POST['password'])) {
-		logUserIn($_POST['username'], $_POST['password'], $_POST['keeplog']);
-		header('Location: index.php');
+		if (isset($_POST['keeplog'])) {
+			logUserIn($_POST['username'], $_POST['password'], True);
+		} else {
+			logUserIn($_POST['username'], $_POST['password'], False);
+		}
 	}
+	header('Location: index.php');
 }
 
 if (isset($_GET['newcall'])) {
