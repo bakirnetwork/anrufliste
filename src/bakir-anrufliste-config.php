@@ -1,4 +1,5 @@
 <?php
+
 // configuration file for bakir-contact system
 
 // prefix already set in php-components-conf.php
@@ -17,5 +18,3 @@ define('DB_ASSIGNMENTS', 'assignments');
 // load sql files for custom tables
 require('sql_calls.php');
 require('sql_assignments.php');
-
-?>

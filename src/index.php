@@ -9,8 +9,6 @@ $twig = new Twig_Environment($loader);
 
 initLogSys();
 
-//logUserIn('Horst', 'Torte', True);
-
 $page = 'login';
 $context = array();
 
@@ -27,10 +25,12 @@ if (isset($_GET['login'])) {
 }
 
 if (isset($_GET['newcall'])) {
-	if (isset($_POST['forename']) &&
+	if (
+		isset($_POST['forename']) &&
 		isset($_POST['lastname']) &&
 		isset($_POST['phone']) &&
-		isset($_POST['subject'])) {
+		isset($_POST['subject'])
+	) {
 		newCall($_POST['forename'], $_POST['lastname'], $_POST['phone'], $_POST['subject'], $_POST['notes'], $_POST['assignments']);
 	}
 	header('Location: index.php');
@@ -53,7 +53,7 @@ if (isset($_GET['undo'])) {
 if (getLogState()) {
 
 	// set assignment ids
-	$query = 'SELECT * FROM '.DB_PREFIX.DB_USERS.' WHERE 1';
+	$query = 'SELECT * FROM ' . DB_PREFIX . DB_USERS . ' WHERE 1';
 	$user = queryMySQLData($query);
 	$assignlist = array();
 
@@ -61,27 +61,29 @@ if (getLogState()) {
 		$assignlist[] = array($row['id'], $row['name']);
 	}
 
-	$context = array('user_name' => getSingleUserData('name'),
-					 'user_id' => getLogState(),
-					'calls_undone' => getCallArray(),
-					'calls_done' => getDoneCallArray(),
-					'users_id' => $assignlist,
-					'done_path' => 'index.php?done=True',
-					'undo_path' => 'index.php?undo=True',
-					'form_path' => 'index.php?newcall=True',
-					'form_forename' => 'forename',
-					'form_lastname' => 'lastname',
-					'form_phone' => 'phone',
-					'form_subject' => 'subject',
+	$context = array('user_name'      => getSingleUserData('name'),
+					'user_id'         => getLogState(),
+					'calls_undone'    => getCallArray(),
+					'calls_done'      => getDoneCallArray(),
+					'users_id'        => $assignlist,
+					'done_path'       => 'index.php?done=True',
+					'undo_path'       => 'index.php?undo=True',
+					'form_path'       => 'index.php?newcall=True',
+					'form_forename'   => 'forename',
+					'form_lastname'   => 'lastname',
+					'form_phone'      => 'phone',
+					'form_subject'    => 'subject',
 					'form_assignment' => 'assignments',
-					'form_notes' => 'notes');
+					'form_notes'      => 'notes');
 	$page = 'home';
 } else {
-	$context = array('form_path' => 'index.php?login=True',
-					'form_user_name' => 'username',
-					'form_password_name' => 'password',
-					'form_keeplog_name' => 'keeplog',
-					'login_error' => False);
+	$context = array(
+		'form_path'          => 'index.php?login=True',
+		'form_user_name'     => 'username',
+		'form_password_name' => 'password',
+		'form_keeplog_name'  => 'keeplog',
+		'login_error'        => False
+	);
 	$page = 'login';
 }
 
@@ -90,5 +92,3 @@ if ($page == 'home') {
 } else if ($page == 'login') {
 	echo $twig->render('login.twig', $context);
 }
-
-?>
