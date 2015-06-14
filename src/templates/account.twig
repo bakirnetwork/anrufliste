@@ -1,0 +1,36 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+	<form class="col-5 mx-auto p3 mt4 border rounded bg-white" action="{{ form_path }}" method="post">
+		<h3 class="mt0 mb3">Account - Passwort ändern</h3>
+
+		{% if password_error %}
+			<div class="bold center p2 mb3 white bg-red rounded">Etwas hat nicht funktioniert!</div>
+		{% endif %}
+
+		<div class="clearfix">
+
+			<div class="mb2">
+				<label class="block mb1" for="password_old">Altes Passwort</label>
+				<input class="field-light full-width" id="password_old" type="password" name="{{ form_password_old }}">
+			</div>
+
+			<div class="mb2">
+				<label class="block mb1" for="password_new">Neues Passwort</label>
+				<input class="field-light full-width" id="password_new" type="password" name="{{ form_password_new }}">
+			</div>
+
+			<div class="mb2">
+				<label class="block mb1" for="password_repeat">Neues Passwort wiederholen</label>
+				<input class="field-light full-width" id="password_repeat" type="password" name="{{ form_password_repeat }}">
+			</div>
+
+			<div class="mt3">
+				<button class="button" type="submit">Passwort ändern</button>
+				<a class="button bg-gray" href="/">Zurück</a>
+			</div>
+		</div>
+	</form>
+
+{% endblock %}

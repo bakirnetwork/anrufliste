@@ -71,7 +71,7 @@
 			modal.classList.toggle('mdl-show');
 		}
 
-		function hideModal() {
+		function hideModal() {
 			modal.classList.remove('mdl-show');
 		}
 
@@ -88,107 +88,102 @@
 	<header class="clearfix p2 white mb3" style="background-color: #e9399b;">
 		<h1 class="col h3 m0" style="margin-top: .3rem;">Bakir Immobilien Anrufe</h1>
 		<nav class="col-right">
-			<a class="button" style="background: none;" href="#">Max Mustermann abmelden</a>
+			<a class="button button-narrow" style="background: none;" href="?logout=true">{{ user_name }} abmelden</a>
+			<a class="button button-narrow mr2" style="background: none;" href="{{ account_path }}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" style="width: 25px; vertical-align: middle;"><path d="M897 454.6V313.4L810.4 299c-6.4-23.3-16-45.7-27.3-65.8l50.5-71.4-99.4-100.2-71.4 50.5c-20.9-11.2-42.5-20.9-65.8-27.3L582.6-1H441.4L427 85.6c-23.3 6.4-45.7 16-65.8 27.3l-71.4-50.5-100.3 99.5 50.5 71.4c-11.2 20.9-20.9 42.5-27.3 66.6L127 313.4v141.2l85.8 14.4c6.4 23.3 16 45.7 27.3 66.6L189.6 607l99.5 99.5 71.4-50.5c20.9 11.2 42.5 20.9 66.6 27.3l14.4 85.8h141.2l14.4-86.6c23.3-6.4 45.7-16 65.8-27.3l71.4 50.5 99.5-99.5-50.5-71.4c11.2-20.9 20.9-42.5 27.3-66.6l86.4-13.6zm-385 77c-81.8 0-147.6-66.6-147.6-147.6 0-81.8 66.6-147.6 147.6-147.6S659.6 302.2 659.6 384 593.8 531.6 512 531.6z" fill="#fff"/></a>
 			<button class="button bg-white" id="new-call" style="color: #e9399b;">Neuer Anruf</button>
 		</nav>
 	</header>
 
 	<div class="container">
-		<div class="clearfix p2 border rounded mb2 bg-white">
-			<div class="col col-11 clearfix" style="margin-top: .45rem;">
-				<div class="col col-12 md-col-4">Max Mustermann <span class="gray">(04421 02845)</span></div>
-				<div class="col col-12 md-col-7 gray">Am 30. April, Immobilienverkauf...</div>
-			</div>
+		{% for call in calls_undone %}
+			<div class="clearfix p2 border rounded mb2 bg-white {% if user_id in call.personen %}bg-silver{% endif %}">
+				<div class="col col-11 clearfix" style="margin-top: .45rem;">
+					<div class="col col-12 md-col-4">{{ call.vorname }} {{ call.nachname }}
+						<span class="gray">({{ call.telefon }})</span>
+					</div>
+					<div class="col col-12 md-col-7 gray">{{ call.datum }}: {{ call.betreff }}...</div>
+				</div>
 
-			<div class="col-right col-1 right-align">
-				<div class="button bg-white gray">✓</div>
+				<div class="col-right col-1 right-align">
+					{% if user_id in call.personen %}
+						<form action="{{ done_path }}" method="post">
+							<button class="button bg-white gray" name="done_id" value="{{ call.id }}" type="submit">✓</button>
+						</form>
+					{% endif %}
+				</div>
 			</div>
-		</div>
-		<div class="p2 border rounded mb2 bg-white clearfix">
-			<div class="col col-11 clearfix" style="margin-top: .45rem;">
-				<div class="col col-12 md-col-4">Suse Mustermann <span class="gray">(04421 37870)</span></div>
-				<div class="col col-12 md-col-7 gray">Am 21. Mai, Bakir Brader Shop...</div>
-			</div>
+		{% endfor %}
 
-			<div class="col-right col-1 right-align">
-				<div class="button bg-white green">✓</div>
-			</div>
-		</div>
-		<div class="p2 border rounded mb2 bg-white clearfix">
-			<div class="col col-11 clearfix" style="margin-top: .45rem;">
-				<div class="col col-12 md-col-4">Herbat Gr&ouml;nemeier <span class="gray">(036741 28401)</span></div>
-				<div class="col col-12 md-col-7 gray">Am 28. Mai, Bakir Brader Shop...</div>
-			</div>
+		{% for call in calls_done %}
+			<div class="clearfix p2 border rounded mb2 bg-white {% if user_id in call.personen %}bg-silver{% endif %}">
 
-			<div class="col-right col-1 right-align">
-				<div class="button bg-white gray">✓</div>
-			</div>
-		</div>
-		<div class="p2 border rounded mb2 bg-white clearfix">
-			<div class="col col-11 clearfix" style="margin-top: .45rem;">
-				<div class="col col-12 md-col-4">Richard Keil <span class="gray">(036741 11924)</span></div>
-				<div class="col col-12 md-col-7 gray">Am 1. Juni, Website Angelegenheit...</div>
-			</div>
+				<div class="col col-11 clearfix" style="margin-top: .45rem;">
+					<div class="col col-12 md-col-4">{{ call.vorname }} {{ call.nachname }}
+						<span class="gray">({{ call.telefon }})</span>
+					</div>
+					<div class="col col-12 md-col-7 gray">{{ call.datum }}: {{ call.betreff }}...</div>
+				</div>
 
-			<div class="col-right col-1 right-align">
-				<div class="button bg-white green">✓</div>
+				<div class="col-right col-1 right-align">
+					{% if user_id in call.personen %}
+						<form action="{{ undo_path }}" method="post">
+							<button class="button bg-white gray" name="undo_id" value="{{ call.id }}" type="submit">↺</button>
+						</form>
+					{% endif %}
+				</div>
 			</div>
-		</div>
+		{% endfor %}
 	</div>
 
 	<div class="mdl-modal" id="new-call-modal">
-		<div class="p3 border rounded bg-white mdl-box">
+		<form class="p3 border rounded bg-white mdl-box" action="{{ form_path }}" method="post">
 
-			<h3 class="mt0 mb3">Neuer Anruf</h3>
+			<h3 class="mt0 mb2">Neuer Anruf</h3>
 
-			<form class="mb2">
+			<div class="clearfix mxn1 mb1">
+				<div class="col col-4 p1">
+					<label class="block mb1" for="contact_forname">Vorname</label>
+					<input class="block full-width field-light" name="{{ form_forename }}" id="contact_forname" type="text">
+				</div>
+				<div class="col col-4 p1">
+					<label class="block mb1" for="contact_lastname">Nachname</label>
+					<input class="block full-width field-light" name="{{ form_lastname }}" id="contact_lastname" type="text">
+				</div>
+				<div class="col col-4 p1">
+					<label class="block mb1" for="contact_phone">Telefonnummer</label>
+					<input class="block full-width field-light" name="{{ form_phone }}" id="contact_phone" type="text">
+				</div>
+			</div>
 
-				<div class="clearfix mxn1 mb1">
-					<div class="col col-4 p1">
-						<label class="block" for="contact_forname">Vorname</label>
-						<input class="block full-width field-light" id="contact_forname" type="text">
-					</div>
-					<div class="col col-4 p1">
-						<label class="block" for="contact_lastname">Nachname</label>
-						<input class="block full-width field-light" id="contact_lastname" type="text">
-					</div>
-					<div class="col col-4 p1">
-						<label class="block" for="contact_phone">Telefonnummer</label>
-						<input class="block full-width field-light" id="contact_phone" type="text">
-					</div>
+			<div class="clearfix mxn1 mb1">
+				<div class="col col-6 p1">
+					<label class="block mb1" for="subject">Betreff</label>
+					<input class="block full-width field-light mb2" name="{{ form_subject }}" id="subject" type="text">
+
+					<label class="block mb1" for="notes">Bemerkungen</label>
+					<textarea class="full-width field-light"  name="{{ form_notes }}" style="resize: vertical;" id="notes" type="text"></textarea>
 				</div>
 
-				<div class="clearfix mxn1 mb1">
-					<div class="col col-6 p1">
-						<label class="block" for="subject">Betreff</label>
-						<input class="block full-width field-light" id="subject" type="text">
-					</div>
-					<div class="col col-6 p1">
-						<label class="block" for="notes">Anruf für</label>
-						<select class="block full-width mb1 field-light">
-							<option selected="selected" disabled="disabled">--</option>
-							<option>Nurhayat Bakir</option>
-							<option>Henrik Walpurgis</option>
-							<option>Jacqueline Bakir Brader</option>
-							<option>Dino Hasanovic</option>
-							<option>Felix Meiser</option>
-						</select>
+				<div class="col col-6 p1">
+					<label class="block mb1">Anruf für</label>
+
+					<div class="clearfix">
+						{% for user in users %}
+							<div class="col col-6 mb1">
+								<input id="user_{{ user.id }}" name="assignments[]" type="checkbox" value="{{ user.id }}">
+								<label for="user_{{ user.id }}">{{ user.name }}</label>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
+			</div>
 
-				<div class="col-8 mb1">
-					<label class="block" for="notes">Bemerkungen</label>
-					<textarea class="full-width field-light" style="resize: vertical;" id="notes" type="text"></textarea>
-				</div>
+			<div class="mt2">
+				<button class="button" type="submit">Fertig</button>
+				<button class="button bg-gray" id="cancel">Abbrechen</button>
+			</div>
 
-				<div class="mt3">
-					<a class="button" href="#">Fertig</a>
-					<button class="button bg-gray" id="cancel">Abbrechen</button>
-				</div>
-
-			</form>
-		</div>
-
+		</form>
 	</div>
 
 	<div id="overlay" class="mdl-overlay"></div>
