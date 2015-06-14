@@ -54,38 +54,67 @@ if (isset($_GET['undo'])) {
 	header('Location: index.php');
 }
 
+
 if (getLogState()) {
+	
+	if (isset($_GET['account'])) {
 
-	// set assignment ids
-	$query = 'SELECT * FROM ' . DB_PREFIX . DB_USERS . ' WHERE 1';
-	$user = queryMySQLData($query);
-	$assignlist = array();
+		if (isset($_POST['password_old']) && isset($_POST['password_new']) && isset($_POST['password_repeat'])) {
 
-	while($row = $user->fetch_array()) {
-		$assignlist[] = array(
-			'id'   => $row['id'],
-			'name' => $row['name']
+			if ($_POST['password_new'] == $_POST['password_repeat']) {
+				$password_result = !resetPassword($_POST['password_old'], $_POST['password_new']);
+			} else {
+				$password_result = False;
+			}
+
+			if ($password_result == False) {
+				header('Location: index.php');
+			}
+		}
+
+		$page = 'account';
+		$context = array(
+			'form_path'            => 'index.php?account=True',
+			'form_password_old'    => 'password_old',
+			'form_password_new'    => 'password_new',
+			'form_password_repeat' => 'password_repeat',
+			'password_error'       => isset($password_result) ? $password_result : False
 		);
+
+	} else {
+
+		// set assignment ids
+		$query = 'SELECT * FROM ' . DB_PREFIX . DB_USERS . ' WHERE 1';
+		$user = queryMySQLData($query);
+		$assignlist = array();
+
+		while($row = $user->fetch_array()) {
+			$assignlist[] = array(
+				'id'   => $row['id'],
+				'name' => $row['name']
+			);
+		}
+
+		$context = array(
+			'user_name'       => getSingleUserData('name'),
+			'user_id'         => getLogState(),
+			'calls_undone'    => getCallArray(),
+			'calls_done'      => getDoneCallArray(),
+			'users'           => $assignlist,
+			'account_path'    => 'index.php?account=True',
+			'done_path'       => 'index.php?done=True',
+			'undo_path'       => 'index.php?undo=True',
+			'form_path'       => 'index.php?newcall=True',
+			'form_forename'   => 'forename',
+			'form_lastname'   => 'lastname',
+			'form_phone'      => 'phone',
+			'form_subject'    => 'subject',
+			'form_assignment' => 'assignments',
+			'form_notes'      => 'notes'
+		);
+
+		$page = 'home';
 	}
-
-	$context = array(
-		'user_name'       => getSingleUserData('name'),
-		'user_id'         => getLogState(),
-		'calls_undone'    => getCallArray(),
-		'calls_done'      => getDoneCallArray(),
-		'users'           => $assignlist,
-		'done_path'       => 'index.php?done=True',
-		'undo_path'       => 'index.php?undo=True',
-		'form_path'       => 'index.php?newcall=True',
-		'form_forename'   => 'forename',
-		'form_lastname'   => 'lastname',
-		'form_phone'      => 'phone',
-		'form_subject'    => 'subject',
-		'form_assignment' => 'assignments',
-		'form_notes'      => 'notes'
-	);
-
-	$page = 'home';
 } else {
 	$context = array(
 		'form_path'          => 'index.php?login=True',
@@ -101,4 +130,6 @@ if ($page == 'home') {
 	echo $twig->render('home.twig', $context);
 } else if ($page == 'login') {
 	echo $twig->render('login.twig', $context);
+} else if ($page == 'account') {
+	echo $twig->render('account.twig', $context);
 }

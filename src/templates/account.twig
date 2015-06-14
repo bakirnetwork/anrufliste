@@ -1,0 +1,30 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+	<div class="col-5 mx-auto p3 mt4 bg-white">
+		<p class="center">Account - Einstellungen</p>
+		{% if password_error %} Etwas hat nicht funktioniert! {% endif %}
+		<div class="clearfix mt4">
+
+			<form action="{{ form_path }}" method="post">
+				<div class="mb2">
+					<label for="username">Altes Passwort</label>
+					<input class="field-light full-width" id="password_old" type="password" name="{{ form_password_old }}">
+				</div>
+				<div class="mb2">
+					<label for="password">Neues Passwort</label>
+					<input class="field-light full-width" id="password_new" type="password" name="{{ form_password_new }}">
+				</div>
+				<div class="mb2">
+					<label for="password">Neues Passwort wiederholen</label>
+					<input class="field-light full-width" id="password_repeat" type="password" name="{{ form_password_repeat }}">
+				</div>
+				<button class="col-left bg-gray white" href="index.php">Zurück</button>
+				<button class="col-right bg-blue white" type="submit">Passwort ändern</button>
+			</form>
+
+		</div>
+	</div>
+
+{% endblock %}
