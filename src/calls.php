@@ -10,7 +10,7 @@ function getCallArray() {
 	$callArray = array();
     
 	if ($calls != NULL) {
-	
+
 		while($row = $calls->fetch_array()) {
 			if ($row['done_date'] == NULL) {
 				
@@ -23,7 +23,7 @@ function getCallArray() {
 									'personen' => getAssignedUserIDs($row['id']));
 			}
 		}
-	
+
 	}
 
 	return $callArray;
