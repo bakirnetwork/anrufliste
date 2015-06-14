@@ -65,20 +65,22 @@ if (getLogState()) {
 		$assignlist[] = array($row['id'], $row['name']);
 	}
 
-	$context = array('user_name'      => getSingleUserData('name'),
-					'user_id'         => getLogState(),
-					'calls_undone'    => getCallArray(),
-					'calls_done'      => getDoneCallArray(),
-					'users_id'        => $assignlist,
-					'done_path'       => 'index.php?done=True',
-					'undo_path'       => 'index.php?undo=True',
-					'form_path'       => 'index.php?newcall=True',
-					'form_forename'   => 'forename',
-					'form_lastname'   => 'lastname',
-					'form_phone'      => 'phone',
-					'form_subject'    => 'subject',
-					'form_assignment' => 'assignments',
-					'form_notes'      => 'notes');
+	$context = array(
+		'user_name'       => getSingleUserData('name'),
+		'user_id'         => getLogState(),
+		'calls_undone'    => getCallArray(),
+		'calls_done'      => getDoneCallArray(),
+		'users_id'        => $assignlist,
+		'done_path'       => 'index.php?done=True',
+		'undo_path'       => 'index.php?undo=True',
+		'form_path'       => 'index.php?newcall=True',
+		'form_forename'   => 'forename',
+		'form_lastname'   => 'lastname',
+		'form_phone'      => 'phone',
+		'form_subject'    => 'subject',
+		'form_assignment' => 'assignments',
+		'form_notes'      => 'notes'
+	);
 	$page = 'home';
 } else {
 	$context = array(
