@@ -6,6 +6,7 @@
 		<p class="center">Wilkommen zur Bakir Immobilien Anruf Liste. Bitte melden Sie sich an.</p>
 
 		<div class="clearfix mt4">
+
 			<form action="{{ form_path }}" method="post">
 				<div class="mb2">
 					<label for="username">Benutzername</label>
@@ -16,9 +17,9 @@
 					<input class="field-light full-width" id="password" type="password" name="{{ form_password_name }}">
 				</div>
 				<input type="checkbox" name="{{ form_keeplog_name }}" value="on"> Angemeldet bleiben? </input>
-				<input class="col-right bg-blue white" value="Anmelden" type="submit">
+				<button class="col-right bg-blue white" type="submit">Anmelden</button>
 			</form>
-			
+
 		</div>
 	</div>
 
