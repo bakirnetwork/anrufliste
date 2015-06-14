@@ -52,52 +52,54 @@
 	</div>
 
 	<div class="container">
-		<div class="sm-col-8 mx-auto p3 border rounded bg-white">
+		<form class="sm-col-8 mx-auto p3 border mb3 rounded bg-white" action="{{ form_path }}" method="post">
 
-			<h3 class="mt0 mb3">Neuer Anruf</h3>
+			<h3 class="mt0 mb2">Neuer Anruf</h3>
 
-			<form class="mb2" action="{{ form_path }}" method="post">
-
-				<div class="clearfix mxn1 mb1">
-					<div class="col col-4 p1">
-						<label class="block" for="contact_forname">Vorname</label>
-						<input class="block full-width field-light" name="{{ form_forename }}" id="contact_forname" type="text">
-					</div>
-					<div class="col col-4 p1">
-						<label class="block" for="contact_lastname">Nachname</label>
-						<input class="block full-width field-light" name="{{ form_lastname }}" id="contact_lastname" type="text">
-					</div>
-					<div class="col col-4 p1">
-						<label class="block" for="contact_phone">Telefonnummer</label>
-						<input class="block full-width field-light" name="{{ form_phone }}" id="contact_phone" type="text">
-					</div>
+			<div class="clearfix mxn1 mb1">
+				<div class="col col-4 p1">
+					<label class="block mb1" for="contact_forname">Vorname</label>
+					<input class="block full-width field-light" name="{{ form_forename }}" id="contact_forname" type="text">
 				</div>
-
-				<div class="clearfix mxn1 mb1">
-					<div class="col col-6 p1">
-						<label class="block" for="subject">Betreff</label>
-						<input class="block full-width field-light" name="{{ form_subject }}" id="subject" type="text">
-					</div>
-					<div class="col col-6 p1">
-						<label class="block" for="notes">Anruf für</label>
-						{% for user in users_id %}
-							<input class="block mb1 field-light" name="assignments[]" type="checkbox" value="{{ user[0] }}">{{ user[1] }}
-						{% endfor %}
-					</div>
+				<div class="col col-4 p1">
+					<label class="block mb1" for="contact_lastname">Nachname</label>
+					<input class="block full-width field-light" name="{{ form_lastname }}" id="contact_lastname" type="text">
 				</div>
+				<div class="col col-4 p1">
+					<label class="block mb1" for="contact_phone">Telefonnummer</label>
+					<input class="block full-width field-light" name="{{ form_phone }}" id="contact_phone" type="text">
+				</div>
+			</div>
 
-				<div class="col-8 mb1">
-					<label class="block" for="notes">Bemerkungen</label>
+			<div class="clearfix mxn1 mb1">
+				<div class="col col-6 p1">
+					<label class="block mb1" for="subject">Betreff</label>
+					<input class="block full-width field-light mb2" name="{{ form_subject }}" id="subject" type="text">
+
+					<label class="block mb1" for="notes">Bemerkungen</label>
 					<textarea class="full-width field-light"  name="{{ form_notes }}" style="resize: vertical;" id="notes" type="text"></textarea>
 				</div>
 
-				<div class="mt3">
-					<button class="button" type="submit">Fertig</button>
-					<button class="button bg-gray" href="#">Abbrechen</button>
-				</div>
+				<div class="col col-6 p1">
+					<label class="block mb1">Anruf für</label>
 
-			</form>
-		</div>
+					<div class="clearfix">
+						{% for user in users %}
+							<div class="col col-6 mb1">
+								<input id="user_{{ user.id }}" name="assignments[]" type="checkbox" value="{{ user.id }}">
+								<label for="user_{{ user.id }}">{{ user.name }}</label>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+
+			<div class="mt2">
+				<button class="button" type="submit">Fertig</button>
+				<button class="button bg-gray" href="#">Abbrechen</button>
+			</div>
+
+		</form>
 	</div>
 
 {% endblock %}

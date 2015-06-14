@@ -62,7 +62,10 @@ if (getLogState()) {
 	$assignlist = array();
 
 	while($row = $user->fetch_array()) {
-		$assignlist[] = array($row['id'], $row['name']);
+		$assignlist[] = array(
+			'id'   => $row['id'],
+			'name' => $row['name']
+		);
 	}
 
 	$context = array(
@@ -70,7 +73,7 @@ if (getLogState()) {
 		'user_id'         => getLogState(),
 		'calls_undone'    => getCallArray(),
 		'calls_done'      => getDoneCallArray(),
-		'users_id'        => $assignlist,
+		'users'           => $assignlist,
 		'done_path'       => 'index.php?done=True',
 		'undo_path'       => 'index.php?undo=True',
 		'form_path'       => 'index.php?newcall=True',
@@ -81,6 +84,7 @@ if (getLogState()) {
 		'form_assignment' => 'assignments',
 		'form_notes'      => 'notes'
 	);
+
 	$page = 'home';
 } else {
 	$context = array(
