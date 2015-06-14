@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 define( 'SQL_ASSIGNMENTS', '
 CREATE TABLE `'.DB_PREFIX.DB_ASSIGNMENTS.'` (

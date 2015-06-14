@@ -27,7 +27,7 @@ if (isset($_GET['login'])) {
 }
 
 if (isset($_GET['newcall'])) {
-	if (isset($_POST['forename']) && 
+	if (isset($_POST['forename']) &&
 		isset($_POST['lastname']) &&
 		isset($_POST['phone']) &&
 		isset($_POST['subject'])) {
@@ -84,7 +84,6 @@ if (getLogState()) {
 					'login_error' => False);
 	$page = 'login';
 }
-
 
 if ($page == 'home') {
 	echo $twig->render('home.twig', $context);

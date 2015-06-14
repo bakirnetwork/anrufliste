@@ -2,13 +2,13 @@
 
 function getCallArray() {
 	initTable(DB_PREFIX.DB_CALLS, SQL_CALLS);
-    
-    $query = 'SELECT * FROM '.DB_PREFIX.DB_CALLS.' WHERE 1 ORDER BY call_date';
-    
-    $calls = queryMySQLData($query);
-	
+
+	$query = 'SELECT * FROM '.DB_PREFIX.DB_CALLS.' WHERE 1 ORDER BY call_date';
+
+	$calls = queryMySQLData($query);
+
 	$callArray = array();
-    
+
 	if ($calls != NULL) {
 
 		while($row = $calls->fetch_array()) {
