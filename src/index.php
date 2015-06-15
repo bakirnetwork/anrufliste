@@ -16,7 +16,7 @@ $context = array();
 
 if (isset($_GET['logout'])) {
 	logUserOut();
-	header('Location: index.php');
+	header('Location: /');
 }
 
 if (isset($_GET['login'])) {
@@ -27,7 +27,7 @@ if (isset($_GET['login'])) {
 			logUserIn($_POST['username'], $_POST['password'], false);
 		}
 	}
-	header('Location: index.php');
+	header('Location: /');
 }
 
 if (isset($_GET['newcall'])) {
@@ -39,21 +39,21 @@ if (isset($_GET['newcall'])) {
 	) {
 		newCall($_POST['forename'], $_POST['lastname'], $_POST['phone'], $_POST['subject'], $_POST['notes'], $_POST['assignments']);
 	}
-	header('Location: index.php');
+	header('Location: /');
 }
 
 if (isset($_GET['done'])) {
 	if (isset($_POST['done_id'])) {
 		callDone($_POST['done_id']);
 	}
-	header('Location: index.php');
+	header('Location: /');
 }
 
 if (isset($_GET['undo'])) {
 	if (isset($_POST['undo_id'])) {
 		callUndo($_POST['undo_id']);
 	}
-	header('Location: index.php');
+	header('Location: /');
 }
 
 
@@ -70,13 +70,13 @@ if (getLogState()) {
 			}
 
 			if ($password_result == false) {
-				header('Location: index.php');
+				header('Location: /');
 			}
 		}
 
 		$page = 'account';
 		$context = array(
-			'form_path'            => 'index.php?account=true',
+			'form_path'            => '?account=true',
 			'form_password_old'    => 'password_old',
 			'form_password_new'    => 'password_new',
 			'form_password_repeat' => 'password_repeat',
@@ -103,10 +103,10 @@ if (getLogState()) {
 			'calls_undone'    => getCallArray(),
 			'calls_done'      => getDoneCallArray(),
 			'users'           => $assignlist,
-			'account_path'    => 'index.php?account=true',
-			'done_path'       => 'index.php?done=true',
-			'undo_path'       => 'index.php?undo=true',
-			'form_path'       => 'index.php?newcall=true',
+			'account_path'    => '?account=true',
+			'done_path'       => '?done=true',
+			'undo_path'       => '?undo=true',
+			'form_path'       => '?newcall=true',
 			'form_forename'   => 'forename',
 			'form_lastname'   => 'lastname',
 			'form_phone'      => 'phone',
@@ -119,7 +119,7 @@ if (getLogState()) {
 	}
 } else {
 	$context = array(
-		'form_path'          => 'index.php?login=true',
+		'form_path'          => '?login=true',
 		'form_user_name'     => 'username',
 		'form_password_name' => 'password',
 		'form_keeplog_name'  => 'keeplog',
