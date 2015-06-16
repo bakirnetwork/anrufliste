@@ -122,7 +122,7 @@ function callDone($id) {
 		$date = date('Y-m-d H:i:s');
 		$person_id = getLogState();
 		$query = 'UPDATE ' . DB_PREFIX . DB_CALLS . ' SET done_date = \'' . $date . '\', done_person = ' . $person_id . ' WHERE id = ' . $id . ';';
-		queryMySQLData($query);
+		return queryMySQLData($query);
 	}
 }
 
@@ -133,7 +133,7 @@ function callUndo($id) {
 	$date = queryMySQLData('SELECT done_date FROM ' . DB_PREFIX . DB_CALLS . ' WHERE id = ' . $id . ';')->fetch_array();
 	if ($date[0] != NULL) {
 		$query = 'UPDATE ' . DB_PREFIX . DB_CALLS . ' SET done_date = NULL, done_person = NULL WHERE id = ' . $id . ';';
-		queryMySQLData($query);
+		return queryMySQLData($query);
 	}
 }
 

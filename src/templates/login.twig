@@ -7,17 +7,17 @@
 
 		<div class="clearfix mt4">
 
-			<form action="{{ form_path }}" method="post">
+			<form action="{{ f_login_path }}" method="post">
 				<div class="mb2">
 					<label for="username">Benutzername</label>
-					<input class="field-light full-width" id="username" type="text" name="{{ form_user_name }}">
+					<input class="field-light full-width" id="username" type="text" name="{{ f_login_user }}">
 				</div>
 				<div class="mb2">
 					<label for="password">Passwort</label>
-					<input class="field-light full-width" id="password" type="password" name="{{ form_password_name }}">
+					<input class="field-light full-width" id="password" type="password" name="{{ f_login_password }}">
 				</div>
-				<input type="checkbox" name="{{ form_keeplog_name }}" value="on"> Angemeldet bleiben? </input>
-				<button class="col-right bg-blue white" type="submit">Anmelden</button>
+				<input type="checkbox" name="{{ f_login_keeplog }}" value="on"> Angemeldet bleiben? </input>
+				<button class="col-right bg-blue white" type="submit" name={{ f_login_submit }} value=True>Anmelden</button>
 			</form>
 
 		</div>
