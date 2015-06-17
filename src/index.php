@@ -31,6 +31,27 @@ $call_done_error = 0;
 $call_undo_error = 0;
 $call_delete_error = 0;
 
+$fields_login = array(
+	'username' => '',
+);
+$fields_call_new = array(
+	'forename'    => '',
+	'lastname'    => '',
+	'phone'       => '',
+	'subject'     => '',
+	'notes'       => '',
+	'assignments' => [],
+);
+
+// check whether a variable is set, if so return it else return ''
+function setPostVar($var) {
+	if (!empty($_POST[$var])) {
+		return $_POST[$var];
+	} else {
+		return '';
+	}
+}
+
 if (getLogState()) {
 
 	// log out
@@ -55,16 +76,22 @@ if (getLogState()) {
 			} else {
 				$password_reset_error = 4;
 			}
-		} else { $password_reset_error = 2; }
+		} else {
+			$password_reset_error = 2;
+		}
 	}
 
 	// new call
 	if (isset($_POST['call_new'])) {
+
+		$set_call_new_fields = false;
+
 		if (
-			isset($_POST['call_new_forename']) &&
-			isset($_POST['call_new_lastname']) &&
-			isset($_POST['call_new_phone']) &&
-			isset($_POST['call_new_subject'])
+			!empty($_POST['call_new_forename']) &&
+			!empty($_POST['call_new_lastname']) &&
+			!empty($_POST['call_new_phone']) &&
+			!empty($_POST['call_new_subject'] &&
+			!empty($_POST['call_new_assignments']))
 		) {
 			$call_new_result = newCall($_POST['call_new_forename'], $_POST['call_new_lastname'], $_POST['call_new_phone'], $_POST['call_new_subject'], $_POST['call_new_notes'], $_POST['call_new_assignments']);
 
@@ -119,9 +146,20 @@ if (getLogState()) {
 				header('Location: index.php?site=home');
 			} else {
 				$call_new_error = 1;
+				$set_call_new_fields = true;
 			}
 		} else {
 			$call_new_error = 2;
+			$set_call_new_fields = true;
+		}
+
+		if ($set_call_new_fields) {
+			$fields_call_new['forename']    = setPostVar('call_new_forename');
+			$fields_call_new['lastname']    = setPostVar('call_new_lastname');
+			$fields_call_new['phone']       = setPostVar('call_new_phone');
+			$fields_call_new['subject']     = setPostVar('call_new_subject');
+			$fields_call_new['notes']       = setPostVar('call_new_notes');
+			$fields_call_new['assignments'] = setPostVar('call_new_assignments');
 		}
 
 	}
@@ -167,7 +205,7 @@ if (getLogState()) {
 } else {
 	// log in
 	if (isset($_POST['login'])) {
-		if (isset($_POST['login_name']) && isset($_POST['login_password'])) {
+		if (!empty($_POST['login_name']) && !empty($_POST['login_password'])) {
 			if (isset($_POST['login_keeplog'])) {
 				$login_result = logUserIn($_POST['login_name'], $_POST['login_password'], true);
 			} else {
@@ -175,13 +213,18 @@ if (getLogState()) {
 			}
 
 			if ($login_result) {
+				$login_error = 0;
 				header('Location: index.php?site=home');
 			}
 			else {
+				$fields_login['username'] = setPostVar('login_name');
 				$login_error = 1;
 			}
 
-		} else { $login_error = 2; }
+		} else {
+			$fields_login['username'] = setPostVar('login_name');
+			$login_error = 2;
+		}
 	}
 
 }
@@ -205,6 +248,7 @@ if (isset($_GET['site'])) {
 				'f_login_user'     => 'login_name',
 				'f_login_password' => 'login_password',
 				'f_login_keeplog'  => 'login_keeplog',
+				'f_fields_login'   => $fields_login,
 				'login_error'      => $login_error
 			);
 			$page = 'login';
@@ -264,6 +308,7 @@ if (isset($_GET['site'])) {
 				'f_call_new_assignments'  => 'call_new_assignments',
 				'f_call_new_notes'        => 'call_new_notes',
 				'f_call_new_submit'       => 'call_new',
+				'f_fields_call_new'       => $fields_call_new,
 				'call_new_error'          => $call_new_error,
 				'call_done_error'         => $call_done_error,
 				'call_undo_error'         => $call_undo_error,
