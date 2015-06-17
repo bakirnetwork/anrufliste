@@ -34,7 +34,7 @@ function getCallArray() {
 function getDoneCallArray() {
 	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
 
-	$query = 'SELECT * FROM ' . DB_PREFIX . DB_CALLS.' WHERE 1 ORDER BY call_date';
+	$query = 'SELECT * FROM ' . DB_PREFIX . DB_CALLS.' WHERE 1 ORDER BY done_date DESC';
 
 	$calls = queryMySQLData($query);
 
@@ -49,7 +49,7 @@ function getDoneCallArray() {
 					'vorname'  => $row['contact_forname'],
 					'nachname' => $row['contact_lastname'],
 					'telefon'  => $row['contact_phone'],
-					'datum'    => getDateString(strtotime($row['call_date'])),
+					'datum'    => getDateString(strtotime($row['done_date'])),
 					'betreff'  => $row['call_subject'],
 					'personen' => getAssignedUserIDs($row['id'])
 				);
