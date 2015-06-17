@@ -4,7 +4,13 @@
 
 	<div class="col-5 mx-auto p3 mt4 bg-white">
 		<p class="center">Wilkommen zur Bakir Immobilien Anruf Liste. Bitte melden Sie sich an.</p>
-
+		
+		{% if login_error == 1 %}
+			<div class="bold center p2 mb3 white bg-red rounded">Leider konnten Sie nicht angemeldet werden.</div>
+		{% elseif login_error == 2 %}
+			<div class="bold center p2 mb3 white bg-red rounded">Bitte füllen Sie alle Felder aus!</div>
+		{% endif %}
+		
 		<div class="clearfix mt4">
 
 			<form action="{{ f_login_path }}" method="post">

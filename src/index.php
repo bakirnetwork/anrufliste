@@ -29,7 +29,6 @@ $call_new_error = 0;
 $call_done_error = 0;
 $call_undo_error = 0;
 
-
 if (getLogState()) {
 	
 	// Abmelden
@@ -41,9 +40,9 @@ if (getLogState()) {
 	// Passwort ändern
 	if (isset($_POST['password_reset'])) {
 		if (
-			isset($_POST['password_reset_old']) && 
-			isset($_POST['password_reset_new']) &&
-			isset($_POST['password_reset_repeat'])
+			!empty($_POST['password_reset_old']) && 
+			!empty($_POST['password_reset_new']) &&
+			!empty($_POST['password_reset_repeat'])
 		) {	
 			if ($_POST['password_reset_new'] == $_POST['password_reset_repeat']) {
 				$password_reset_result = resetPassword($_POST['password_reset_old'], $_POST['password_reset_new']);
@@ -62,10 +61,11 @@ if (getLogState()) {
 	// Neuer Anruf
 	if (isset($_POST['call_new'])) {
 		if (
-			isset($_POST['call_new_forename']) &&
-			isset($_POST['call_new_lastname']) &&
-			isset($_POST['call_new_phone']) &&
-			isset($_POST['call_new_subject'])
+			!empty($_POST['call_new_forename']) &&
+			!empty($_POST['call_new_lastname']) &&
+			!empty($_POST['call_new_phone']) &&
+			!empty($_POST['call_new_subject'] &&
+			!empty($_POST['call_new_assignments']))
 		) {
 			$call_new_result = newCall($_POST['call_new_forename'], $_POST['call_new_lastname'], $_POST['call_new_phone'], $_POST['call_new_subject'], $_POST['call_new_notes'], $_POST['call_new_assignments']);
 
@@ -107,7 +107,7 @@ if (getLogState()) {
 } else {
 	// Anmelden
 	if (isset($_POST['login'])) {
-		if (isset($_POST['login_name']) && isset($_POST['login_password'])) {
+		if (!empty($_POST['login_name']) && !empty($_POST['login_password'])) {
 			if (isset($_POST['login_keeplog'])) {
 				$login_result = logUserIn($_POST['login_name'], $_POST['login_password'], true);
 			} else {
