@@ -29,6 +29,10 @@ $call_new_error = 0;
 $call_done_error = 0;
 $call_undo_error = 0;
 
+$login_fields = array();
+$password_reset_fields = array();
+$call_new_fields = array();
+
 if (getLogState()) {
 	
 	// Abmelden
@@ -47,7 +51,8 @@ if (getLogState()) {
 			if ($_POST['password_reset_new'] == $_POST['password_reset_repeat']) {
 				$password_reset_result = resetPassword($_POST['password_reset_old'], $_POST['password_reset_new']);
 				if ($password_reset_result) {
-					header('Location: index.php?site=home'); 
+					$password_reset_error = 0;
+					header('Location: index.php?site=home');
 				} else { 
 					$password_reset_error = 1; 
 				}
@@ -55,11 +60,16 @@ if (getLogState()) {
 				$password_reset_error = 4;	
 			}
 
-		} else { $password_reset_error = 2; }	
+		} else { 
+			$password_reset_error = 2; 
+		}	
 	}
 
 	// Neuer Anruf
 	if (isset($_POST['call_new'])) {
+		
+		$set_call_new_fields = false;
+		
 		if (
 			!empty($_POST['call_new_forename']) &&
 			!empty($_POST['call_new_lastname']) &&
@@ -68,14 +78,27 @@ if (getLogState()) {
 			!empty($_POST['call_new_assignments']))
 		) {
 			$call_new_result = newCall($_POST['call_new_forename'], $_POST['call_new_lastname'], $_POST['call_new_phone'], $_POST['call_new_subject'], $_POST['call_new_notes'], $_POST['call_new_assignments']);
-
+			
 			if ($call_new_result) {
-				header('Location: index.php?site=home');		
+				header('Location: index.php?site=home');
 			} else {
-				$call_new_error = 1;	
+				$call_new_error = 1;
+				$set_call_new_fields = true;
 			}
 		} else {
-			$call_new_error = 2;	
+			$call_new_error = 2;
+			$set_call_new_fields = true;
+		}
+		
+		if ($set_call_new_fields) {
+			$call_new_fields = array(
+					'forename'    => !empty($_POST['call_new_forename'])    ? $_POST['call_new_forename']    : '',
+					'lastname'    => !empty($_POST['call_new_lastname'])    ? $_POST['call_new_lastname']    : '',
+					'phone'       => !empty($_POST['call_new_phone'])       ? $_POST['call_new_phone']       : '',
+					'subject'     => !empty($_POST['call_new_subject'])     ? $_POST['call_new_subject']     : '',
+					'assignments' => !empty($_POST['call_new_assignments']) ? $_POST['call_new_assignments'] : '',
+					'notes'       => !empty($_POST['call_new_notes'])       ? $_POST['call_new_notes']       : '',
+			);
 		}
 
 	}
@@ -85,6 +108,7 @@ if (getLogState()) {
 		if (isset($_POST['call_done_id'])) {
 			$call_done_result = callDone($_POST['call_done_id']);
 			if ($call_done_result) {
+				$call_done_error = 0;
 				header('Location: index.php?site=home');	
 			} else {
 				$call_done_error = 1;	
@@ -97,6 +121,7 @@ if (getLogState()) {
 		if (isset($_POST['call_undo_id'])) {
 			$call_undo_result = callUndo($_POST['call_undo_id']);
 			if ($call_undo_result) {
+				$call_done_error = 0;
 				header('Location: index.php?site=home');	
 			} else {
 				$call_done_error = 1;	
@@ -114,14 +139,24 @@ if (getLogState()) {
 				$login_result = logUserIn($_POST['login_name'], $_POST['login_password'], false);
 			}
 
-			if ($login_result) { 
+			if ($login_result) {
+				$login_error = 0;
+				$login_fields = array();
 				header('Location: index.php?site=home'); 
 			}
 			else { 
-				$login_error = 1; 
+				$login_error = 1;
+				$login_fields = array(
+					'name' => !empty($_POST['login_name'])    ? $_POST['login_name']    : ''
+				);
 			}
 
-		} else { $login_error = 2; }	
+		} else { 
+			$login_error = 2; 
+			$login_fields = array(
+				'name' => !empty($_POST['login_name'])    ? $_POST['login_name']    : ''
+			);
+		}	
 	}
 
 }
@@ -146,7 +181,8 @@ if (isset($_GET['site'])) {
 				'f_login_user'     => 'login_name',
 				'f_login_password' => 'login_password',
 				'f_login_keeplog'  => 'login_keeplog',
-				'login_error'      => $login_error
+				'login_error'      => $login_error,
+				'login_fields'     => $login_fields
 			);
 			$page = 'login';		
 		}
@@ -205,7 +241,8 @@ if (isset($_GET['site'])) {
 				'f_call_new_submit'       => 'call_new',
 				'call_new_error'          => $call_new_error,
 				'call_done_error'         => $call_done_error,
-				'call_undo_error'         => $call_undo_error
+				'call_undo_error'         => $call_undo_error,
+				'call_new_fields'         => $call_new_fields
 			);
 	
 			$page = 'home';	

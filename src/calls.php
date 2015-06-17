@@ -115,7 +115,9 @@ function getAssignedUserNames($call_id) {
 
 function callDone($id) {
 	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
-
+	
+	if (!is_numeric($id)) { return; }
+	
 	// check wether call is not already done
 	$date = queryMySQLData('SELECT done_date FROM ' . DB_PREFIX . DB_CALLS . ' WHERE id = ' . $id . ';')->fetch_array();
 	if ($date[0] == NULL) {
@@ -128,7 +130,9 @@ function callDone($id) {
 
 function callUndo($id) {
 	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
-
+	
+	if (!is_numeric($id)) { return; }
+	
 	// check wether call is already done
 	$date = queryMySQLData('SELECT done_date FROM ' . DB_PREFIX . DB_CALLS . ' WHERE id = ' . $id . ';')->fetch_array();
 	if ($date[0] != NULL) {
@@ -140,7 +144,14 @@ function callUndo($id) {
 function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subject, $call_notes, $call_assignments) {
 	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
 	initTable(DB_PREFIX . DB_ASSIGNMENTS, SQL_ASSIGNMENTS);
-
+	
+	$contact_forname = secureString($contact_forname);
+	$contact_lastname = secureString($contact_lastname);
+	$contact_phone = secureString($contact_phone);
+	$call_subject = secureString($call_subject);
+	$call_notes = secureString($call_notes);
+	$call_assignments = secureArray($call_assignments);
+	
 	$create_datetime = date('Y-m-d H:i:s');
 	$call_date       = $create_datetime;
 	$create_person   = getLogState();
@@ -190,5 +201,5 @@ function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subj
 		$i++;
 	}
 
-	queryMySQLData($query);
+	return(queryMySQLData($query));
 }
