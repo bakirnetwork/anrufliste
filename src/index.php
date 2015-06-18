@@ -29,6 +29,7 @@ $password_reset_error = 0; // 4 - password_reset_new and password_reset_repeat d
 $call_new_error = 0;
 $call_done_error = 0;
 $call_undo_error = 0;
+$call_delete_error = 0;
 
 if (getLogState()) {
 
@@ -142,9 +143,23 @@ if (getLogState()) {
 		if (isset($_POST['call_undo_id'])) {
 			$call_undo_result = callUndo($_POST['call_undo_id']);
 			if ($call_undo_result) {
+				$call_undo_error = 0;
 				header('Location: index.php?site=home');
 			} else {
-				$call_done_error = 1;
+				$call_undo_error = 1;
+			}
+		}
+	}
+
+	// delete call
+	if (isset($_POST['call_delete'])) {
+		if (isset($_POST['call_delete_id'])) {
+			$call_delete_result = callDelete($_POST['call_delete_id']);
+			if ($call_delete_result) {
+				$call_delete_error = 0;
+				header('Location: index.php?site=home');
+			} else {
+				$call_delete_error = 1;
 			}
 		}
 	}
@@ -240,6 +255,8 @@ if (isset($_GET['site'])) {
 				'f_call_done_id'          => 'call_done_id',
 				'f_call_undo_submit'      => 'call_undo',
 				'f_call_undo_id'          => 'call_undo_id',
+				'f_call_delete_submit'    => 'call_delete',
+				'f_call_delete_id'        => 'call_delete_id',
 				'f_call_new_forename'     => 'call_new_forename',
 				'f_call_new_lastname'     => 'call_new_lastname',
 				'f_call_new_phone'        => 'call_new_phone',
@@ -249,7 +266,8 @@ if (isset($_GET['site'])) {
 				'f_call_new_submit'       => 'call_new',
 				'call_new_error'          => $call_new_error,
 				'call_done_error'         => $call_done_error,
-				'call_undo_error'         => $call_undo_error
+				'call_undo_error'         => $call_undo_error,
+				'call_delete_error'       => $call_delete_error
 			);
 			$page = 'home';
 		} else {

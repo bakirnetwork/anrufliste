@@ -137,6 +137,16 @@ function callUndo($id) {
 	}
 }
 
+function callDelete($id) {
+	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
+	
+	if (!is_numeric($id)) { return; }
+	
+	$query = 'DELETE FROM ' . DB_PREFIX . DB_CALLS . ' WHERE id = ' . $id . ';';
+	
+	return queryMySQLData($query);
+}
+
 function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subject, $call_notes, $call_assignments) {
 	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
 	initTable(DB_PREFIX . DB_ASSIGNMENTS, SQL_ASSIGNMENTS);
