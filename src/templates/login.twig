@@ -2,22 +2,31 @@
 
 {% block content %}
 
-	<div class="col-5 mx-auto p3 mt4 bg-white">
-		<p class="center">Wilkommen zur Bakir Immobilien Anruf Liste. Bitte melden Sie sich an.</p>
-
-		<div class="clearfix mt4">
+	<div class="container mt4">
+		<div class="col-8 sm-col-6 md-col-5 lg-col-4 mx-auto p3 border rounded bg-white">
+			<p class="center mb3">Wilkommen zur Bakir Immobilien Anruf Liste, bitte melden Sie sich an.</p>
 
 			<form action="{{ form_path }}" method="post">
 				<div class="mb2">
 					<label for="username">Benutzername</label>
 					<input class="field-light full-width" id="username" type="text" name="{{ form_user_name }}">
 				</div>
-				<div class="mb2">
+
+				<div class="mb1">
 					<label for="password">Passwort</label>
 					<input class="field-light full-width" id="password" type="password" name="{{ form_password_name }}">
 				</div>
-				<input type="checkbox" name="{{ form_keeplog_name }}" value="on"> Angemeldet bleiben? </input>
-				<button class="col-right bg-blue white" type="submit">Anmelden</button>
+
+				<div class="clearfix">
+					<div class="sm-col sm-col-8 mt2">
+						<input id="keeplog" type="checkbox" name="{{ form_keeplog_name }}" value="on" checked>
+						<label for="keeplog">Angemeldet bleiben</label>
+					</div>
+					<div class="sm-col sm-col-4 mt2 clearfix">
+						<button class="sm-col-right button" type="submit">Anmelden</button>
+					</div>
+				</div>
+
 			</form>
 
 		</div>
