@@ -95,44 +95,60 @@
 	</header>
 
 	<div class="container">
-		{% for call in calls_undone %}
-			<div class="clearfix p2 border rounded mb2 bg-white {% if user_id in call.personen %}bg-silver{% endif %}">
-				<div class="col col-11 clearfix" style="margin-top: .45rem;">
-					<div class="col col-12 md-col-4">{{ call.vorname }} {{ call.nachname }}
-						<span class="gray">({{ call.telefon }})</span>
+
+		{% if not calls_done and not calls_undone %}
+			<p class="mt4 h3 regular">Keine Anrufe vorhanden.</p>
+			<p class="muted">
+				Erstellen Sie einen neuen Anruf,
+				indem Sie oben rechts auf „Neuer Anruf“ klicken.
+			</p>
+		{% endif %}
+
+		{% if calls_undone %}
+			<h2 class="px2 mt4 h3 regular muted">Anrufe</h2>
+			{% for call in calls_undone %}
+				<div class="clearfix p2 border rounded mb2{% if not user_id in call.personen %} bg-silver{% else %} bg-white{% endif %}">
+					<div class="col col-11 clearfix" style="margin-top: .45rem;">
+						<div class="col col-12 md-col-4">{{ call.vorname }} {{ call.nachname }}
+							<span class="gray">({{ call.telefon }})</span>
+						</div>
+						<div class="col col-12 md-col-7 gray">{{ call.datum }}: {{ call.betreff }}...</div>
 					</div>
-					<div class="col col-12 md-col-7 gray">{{ call.datum }}: {{ call.betreff }}...</div>
-				</div>
 
-				<div class="col-right col-1 right-align">
-					{% if user_id in call.personen %}
-						<form action="{{ done_path }}" method="post">
-							<button class="button bg-white gray" name="done_id" value="{{ call.id }}" type="submit">✓</button>
-						</form>
-					{% endif %}
-				</div>
-			</div>
-		{% endfor %}
-
-		{% for call in calls_done %}
-			<div class="clearfix p2 border rounded mb2 bg-white {% if user_id in call.personen %}bg-silver{% endif %}">
-
-				<div class="col col-11 clearfix" style="margin-top: .45rem;">
-					<div class="col col-12 md-col-4">{{ call.vorname }} {{ call.nachname }}
-						<span class="gray">({{ call.telefon }})</span>
+					<div class="col-right col-1 right-align">
+						{% if user_id in call.personen %}
+							<form action="{{ done_path }}" method="post">
+								<button class="button bg-white gray" name="done_id" value="{{ call.id }}" type="submit">✓</button>
+							</form>
+						{% endif %}
 					</div>
-					<div class="col col-12 md-col-7 gray">{{ call.datum }}: {{ call.betreff }}...</div>
 				</div>
+			{% endfor %}
+		{% endif %}
 
-				<div class="col-right col-1 right-align">
-					{% if user_id in call.personen %}
-						<form action="{{ undo_path }}" method="post">
-							<button class="button bg-white gray" name="undo_id" value="{{ call.id }}" type="submit">↺</button>
-						</form>
-					{% endif %}
+		{% if calls_done %}
+			<h2 class="px2 mt4 h3 regular muted">Erledigt</h2>
+			{% for call in calls_done %}
+				<div class="clearfix p2 border rounded mb2 bg-white{% if not user_id in call.personen %} bg-silver{% else %} bg-white{% endif %}">
+
+					<div class="col col-11 clearfix" style="margin-top: .45rem;">
+						<div class="col col-12 md-col-4">{{ call.vorname }} {{ call.nachname }}
+							<span class="gray">({{ call.telefon }})</span>
+						</div>
+						<div class="col col-12 md-col-7 gray">{{ call.datum }}: {{ call.betreff }}...</div>
+					</div>
+
+					<div class="col-right col-1 right-align">
+						{% if user_id in call.personen %}
+							<form action="{{ undo_path }}" method="post">
+								<button class="button bg-white gray" name="undo_id" value="{{ call.id }}" type="submit">↺</button>
+							</form>
+						{% endif %}
+					</div>
 				</div>
-			</div>
-		{% endfor %}
+			{% endfor %}
+		{% endif %}
+
 	</div>
 
 	<div class="mdl-modal" id="new-call-modal">
