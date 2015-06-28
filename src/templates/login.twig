@@ -4,17 +4,22 @@
 
 	<div class="container mt4">
 		<div class="col-8 sm-col-6 md-col-5 lg-col-4 mx-auto p3 border rounded bg-white">
-			<p class="center mb3">Wilkommen zur Bakir Immobilien Anruf Liste, bitte melden Sie sich an.</p>
-
+			{% if login_error %}
+				<p class="container center p2 mb2 bg-yellow rounded">
+					<strong>Fehler!</strong> Der Benutzername und das Passwort scheinen nicht zu stimmen, bitte versuche es erneut.
+				</p>
+			{% else %}
+				<p class="center mb3">Wilkommen zur Bakir Immobilien Anruf Liste, bitte melden Sie sich an.</p>
+			{% endif %}
 			<form action="{{ form_path }}" method="post">
 				<div class="mb2">
 					<label for="username">Benutzername</label>
-					<input class="field-light full-width" id="username" type="text" name="{{ form_user_name }}">
+					<input class="field-light full-width{% if login_error %} is-error{% endif %}" id="username" type="text" name="{{ form_user_name }}">
 				</div>
 
 				<div class="mb1">
 					<label for="password">Passwort</label>
-					<input class="field-light full-width" id="password" type="password" name="{{ form_password_name }}">
+					<input class="field-light full-width{% if login_error %} is-error{% endif %}" id="password" type="password" name="{{ form_password_name }}">
 				</div>
 
 				<div class="clearfix">

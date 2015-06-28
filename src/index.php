@@ -12,6 +12,7 @@ $twig = new Twig_Environment($loader);
 initLogSys();
 
 $page = 'login';
+$login_error = false;
 $context = array();
 
 if (isset($_GET['logout'])) {
@@ -20,14 +21,13 @@ if (isset($_GET['logout'])) {
 }
 
 if (isset($_GET['login'])) {
-	if (isset($_POST['username']) && isset($_POST['password'])) {
-		if (isset($_POST['keeplog'])) {
-			logUserIn($_POST['username'], $_POST['password'], true);
-		} else {
-			logUserIn($_POST['username'], $_POST['password'], false);
-		}
-	}
-	header('Location: /');
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+	$keeplog  = $_POST['keeplog'];
+
+	logUserIn($username, $password, $keeplog);
+	$login_error = true;
+	//header('Location: /');
 }
 
 if (isset($_GET['newcall'])) {
@@ -123,7 +123,7 @@ if (getLogState()) {
 		'form_user_name'     => 'username',
 		'form_password_name' => 'password',
 		'form_keeplog_name'  => 'keeplog',
-		'login_error'        => false
+		'login_error'        => $login_error
 	);
 	$page = 'login';
 }
