@@ -8,6 +8,7 @@ require(__DIR__ . '/calls.php');
 
 $loader = new Twig_Loader_Filesystem('templates');
 $twig = new Twig_Environment($loader);
+$slack = new Maknz\Slack\Client(SLACK_WEBHOOK, ['link_names' => true]);
 
 initLogSys();
 
@@ -38,7 +39,55 @@ if (isset($_GET['newcall'])) {
 		isset($_POST['subject'])
 	) {
 		newCall($_POST['forename'], $_POST['lastname'], $_POST['phone'], $_POST['subject'], $_POST['notes'], $_POST['assignments']);
+
+		function assignedNames() {
+			$id_query = '';
+
+			foreach($_POST['assignments'] as $assignment) {
+				$id_query = $id_query . $assignment . ',';
+			}
+
+			$id_query = trim($id_query, ',');
+
+			$query = 'SELECT * FROM ' . DB_PREFIX . DB_USERS . ' WHERE id in (' . $id_query . ')';
+			$user = queryMySQLData($query);
+			$namelist = [];
+
+			while($row = $user->fetch_array()) {
+				$namelist[] = $row['name'];
+			}
+
+			return $namelist;
+		}
+
+		// generate and send Slack message
+		$namelist = assignedNames();
+		$slackPoke = '';
+		$anrede = 'Dir';
+
+		if (count($namelist) > 1) {
+			$anrede = 'Euch';
+		}
+
+		foreach($namelist as $i=>$name) {
+			$slackPoke .= '@' . $name;
+
+			if ($i <= count($namelist) -3) {
+				$slackPoke .= ', ';
+			} elseif ($i == count($namelist) -2) {
+				$slackPoke .= ' und ';
+			}
+		}
+
+		$message  = 'Hallo ' . $slackPoke . '! ';
+		$message .= $anrede . ' wurde ein *neuer Anruf* ';
+		$message .= 'von @' . getSingleUserData('name') . ' zugewiesen. ';
+		$message .= '<http://' . $_SERVER['SERVER_NAME'] . '|Hier ansehen> für Details.';
+
+		$slack->send($message);
+
 	}
+
 	header('Location: /');
 }
 

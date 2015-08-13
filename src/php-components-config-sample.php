@@ -15,5 +15,8 @@ define('DB_PREFIX', 'bc_');
 // MySQL user table name (without prefix)
 define('DB_USERS', 'users');
 
+// Slack Webhook used to send messages when calls get assigned
+define('SLACK_WEBHOOK', 'http://your.slack.endpoint');
+
 // load php-components files
 require(ABSPATH . 'php-components.php');
