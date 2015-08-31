@@ -34,23 +34,19 @@ module.exports = function(grunt) {
 			production: {
 				host: '<%= secret.host %>',
 				username: '<%= secret.username %>',
-				password: '<%= secret.password %>'
+				password: '<%= secret.password %>',
+				deployTo: '<%= secret.deployTo %>'
 			}
 		},
 
-		sftp: {
-			deploy: {
-				files: {
-					'./': ['dist/**']
-				},
-				options: {
-					path: '/www/',
-
-					srcBasePath: 'dist/',
-
-					showProgress: true,
-					createDirectories: true
-				}
+		syncdeploy: {
+			options: {
+				removeEmpty: true,
+				keepFiles: ['php-components-config.php']
+			},
+			main: {
+				cwd: 'dist/',
+				src: ['**/*']
 			}
 		}
 	});
@@ -59,12 +55,12 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-newer');
-	grunt.loadNpmTasks('grunt-ssh');
+	grunt.loadNpmTasks('grunt-sync-deploy');
 
 	grunt.option('config', 'production');
 
 	grunt.registerTask('build', ['clean', 'copy']);
-	grunt.registerTask('deploy', ['build', 'sftp:deploy']);
+	grunt.registerTask('deploy', ['build', 'syncdeploy']);
 	grunt.registerTask('default', ['build', 'watch']);
 
 };
