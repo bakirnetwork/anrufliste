@@ -9,7 +9,7 @@
 			left: 50%;
 			z-index: 2000;
 			width: 90%;
-			max-width: 650px;
+			max-width: 750px;
 			visibility: hidden;
 			-webkit-transform: translateX(-50%) translateY(-50%);
 			-ms-transform:     translateX(-50%) translateY(-50%);
@@ -193,9 +193,9 @@
 				<div class="col col-6 p1">
 					<label class="block mb1">Anruf für *</label>
 
-					<div class="clearfix">
+					<div class="flex flex-wrap">
 						{% for user in users %}
-							<div class="col col-6 mb1">
+							<div class="mr2 mb2">
 								<input id="user_{{ user.id }}" name="{{ f_call_new_assignments }}[]" type="checkbox" value="{{ user.id }}" {% if user.id in f_fields_call_new.assignments %}checked{% endif %}>
 								<label for="user_{{ user.id }}">{{ user.name }}</label>
 							</div>
