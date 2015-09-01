@@ -91,7 +91,7 @@
 			<form class="inline" action="{{ f_home_path }}" method="post">
 				<button class="button button-narrow" style="background: none;" name="{{ f_logout_submit }}" value="true" type="submit">{{ user_name }} abmelden</button>
 			</form>
-			<a class="button button-narrow mr2" style="background: none;" href="{{ f_account_path }}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" style="width: 25px; vertical-align: middle;"><path d="M897 454.6V313.4L810.4 299c-6.4-23.3-16-45.7-27.3-65.8l50.5-71.4-99.4-100.2-71.4 50.5c-20.9-11.2-42.5-20.9-65.8-27.3L582.6-1H441.4L427 85.6c-23.3 6.4-45.7 16-65.8 27.3l-71.4-50.5-100.3 99.5 50.5 71.4c-11.2 20.9-20.9 42.5-27.3 66.6L127 313.4v141.2l85.8 14.4c6.4 23.3 16 45.7 27.3 66.6L189.6 607l99.5 99.5 71.4-50.5c20.9 11.2 42.5 20.9 66.6 27.3l14.4 85.8h141.2l14.4-86.6c23.3-6.4 45.7-16 65.8-27.3l71.4 50.5 99.5-99.5-50.5-71.4c11.2-20.9 20.9-42.5 27.3-66.6l86.4-13.6zm-385 77c-81.8 0-147.6-66.6-147.6-147.6 0-81.8 66.6-147.6 147.6-147.6S659.6 302.2 659.6 384 593.8 531.6 512 531.6z" fill="#fff"/></a>
+			<a class="button button-narrow mr2" style="background: none;" href="{{ f_account_path }}">{{ icon.place('cog') }}</a>
 			<button class="button bg-white" id="new-call" style="color: #e9399b;">Neuer Anruf</button>
 		</nav>
 	</header>
@@ -121,7 +121,7 @@
 						{% if user_id in call.personen %}
 							<form action="{{ f_home_path }}" method="post">
 								<input type="hidden" name="{{ f_call_done_id }}" value="{{ call.id }}">
-								<button class="button bg-white gray" name="{{ f_call_done_submit }}" value="true" type="submit">✓</button>
+								<button class="button bg-white gray" name="{{ f_call_done_submit }}" value="true" type="submit">{{ icon.place('check') }}</button>
 							</form>
 						{% endif %}
 					</div>
@@ -145,7 +145,7 @@
 						{% if user_id in call.personen %}
 							<form action="{{ f_home_path }}" method="post">
 								<input type="hidden" name="{{ f_call_undo_id }}" value="{{ call.id }}">
-								<button class="button bg-white gray" name="{{ f_call_undo_submit }}" value="true" type="submit">↺</button>
+								<button class="button bg-white gray" name="{{ f_call_undo_submit }}" value="true" type="submit">{{ icon.place('refresh') }}</button>
 							</form>
 						{% endif %}
 					</div>
