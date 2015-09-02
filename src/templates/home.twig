@@ -111,8 +111,9 @@
 			{% for call in calls_undone %}
 				<div class="clearfix p2 border rounded mb2{% if not user_id in call.personen %} bg-silver{% else %} bg-white{% endif %}">
 					<div class="col col-11 clearfix" style="margin-top: .45rem;">
-						<div class="col col-12 md-col-4">{{ call.vorname }} {{ call.nachname }}
-							<span class="gray">({{ call.telefon }})</span>
+						<div class="col col-12 md-col-4">
+							{{ call.vorname }} {{ call.nachname }}
+							{% if call.telefon %}<span class="gray">({{ call.telefon }})</span>{% endif %}
 						</div>
 						<div class="col col-12 md-col-7 gray">{{ call.datum }}: {{ call.betreff }}...</div>
 					</div>
@@ -135,8 +136,9 @@
 				<div class="clearfix p2 border rounded mb2 bg-white{% if not user_id in call.personen %} bg-silver{% else %} bg-white{% endif %}">
 
 					<div class="col col-11 clearfix" style="margin-top: .45rem;">
-						<div class="col col-12 md-col-4">{{ call.vorname }} {{ call.nachname }}
-							<span class="gray">({{ call.telefon }})</span>
+						<div class="col col-12 md-col-4">
+							{{ call.vorname }} {{ call.nachname }}
+							{% if call.telefon %}<span class="gray">({{ call.telefon }})</span>{% endif %}
 						</div>
 						<div class="col col-12 md-col-7 gray">{{ call.datum }}: {{ call.betreff }}...</div>
 					</div>
