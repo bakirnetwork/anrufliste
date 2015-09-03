@@ -23,8 +23,8 @@ function getCallArray() {
 					'datum'       => date('d.m.o H:i', strtotime($row['call_date'])),
 					'betreff'     => $row['call_subject'],
 					'bemerkungen' => $row['call_notes'],
-					'ersteller_id'=> $row['create_person'],
-					'personen_id' => getAssignedUserIDs($row['id'])
+					'ersteller'   => getUserData(['id' => $row['create_person']])['name'],
+					'personen'    => getAssignedUserNames($row['id'])
 				);
 			}
 		}
@@ -56,8 +56,8 @@ function getDoneCallArray() {
 					'datum'       => date('d.m.o H:i', strtotime($row['call_date'])),
 					'betreff'     => $row['call_subject'],
 					'bemerkungen' => $row['call_notes'],
-					'ersteller_id'=> $row['create_person'],
-					'personen_id' => getAssignedUserIDs($row['id'])
+					'ersteller'   => getUserData(['id' => $row['create_person']])['name'],
+					'personen'    => getAssignedUserNames($row['id'])
 				);
 			}
 		}
