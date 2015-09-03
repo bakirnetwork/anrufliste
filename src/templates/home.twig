@@ -58,10 +58,36 @@
 			transform:         scale(1);
 		}
 
+		.tooltip-content-wrapper {
+			display: none;
+		}
+
+		/* PowerTip Plugin */
+		#powerTip {
+			cursor: default;
+			background-color: rgba(255, 255, 255, 0.6);
+			border-radius: 3px;
+
+			border: 1px solid rgba(0,0,0,.125);
+
+			display: none;
+			padding: 10px;
+			position: absolute;
+			white-space: nowrap;
+			z-index: 2147483647;
+		}
+		#powerTip:before {
+			content: "";
+			position: absolute;
+		}
+
 	</style>
 {% endblock %}
 
 {% block foot %}
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-powertip/1.2.0/jquery.powertip.min.js"></script>
 
 	<script>
 
@@ -78,6 +104,14 @@
 		document.getElementById('new-call').onclick = function() { toggleModal(); };
 		document.getElementById('overlay').onclick  = function() { hideModal(); };
 		document.getElementById('cancel').onclick   = function() { hideModal(); };
+
+		$('.tooltip').powerTip({
+			followMouse: true
+		});
+
+		$('.tooltip').data('powertipjq', function() {
+			return $(this).find('.tooltip-content');
+		});
 
 	</script>
 
@@ -109,7 +143,8 @@
 		{% if calls_undone %}
 			<h2 class="px2 mt4 h3 regular muted">Anrufe</h2>
 			{% for call in calls_undone %}
-				<div class="clearfix p2 border rounded mb2{% if not user_id in call.personen_id %} bg-silver{% else %} bg-white{% endif %}">
+				<div class="tooltip clearfix p2 border rounded mb2{% if not user_id in call.personen_id %} bg-silver{% else %} bg-white{% endif %}">
+
 					<div class="col col-11 clearfix" style="margin-top: .45rem;">
 						<div class="col col-12 md-col-4">
 							{{ call.vorname }} {{ call.nachname }}
@@ -126,6 +161,26 @@
 							</form>
 						{% endif %}
 					</div>
+
+					<div class="tooltip-content-wrapper">
+						<div class="tooltip-content">
+							<b>Erstellt:</b> {{ call.datum }} von {{ call.ersteller }}
+
+							{% if call.bemerkungen %}
+								<br>
+								<b>Bemerkung:</b> {{ call.bemerkungen }}
+							{% endif %}
+
+							{% if call.personen %}
+								<br>
+								<b>Für:</b>
+								{% for person in call.personen %}
+									{{ person }}{% if not loop.last %},{% endif %}
+								{% endfor %}
+							{% endif %}
+						</div>
+					</div>
+
 				</div>
 			{% endfor %}
 		{% endif %}
@@ -133,7 +188,7 @@
 		{% if calls_done %}
 			<h2 class="px2 mt4 h3 regular muted">Erledigt</h2>
 			{% for call in calls_done %}
-				<div class="clearfix p2 border rounded mb2 bg-white{% if not user_id in call.personen_id %} bg-silver{% else %} bg-white{% endif %}">
+				<div class="tooltip clearfix p2 border rounded mb2 bg-white{% if not user_id in call.personen_id %} bg-silver{% else %} bg-white{% endif %}">
 
 					<div class="col col-11 clearfix" style="margin-top: .45rem;">
 						<div class="col col-12 md-col-4">
@@ -151,6 +206,26 @@
 							</form>
 						{% endif %}
 					</div>
+
+					<div class="tooltip-content-wrapper">
+						<div class="tooltip-content">
+							<b>Erstellt:</b> {{ call.datum }} von {{ call.ersteller }}
+
+							{% if call.bemerkungen %}
+								<br>
+								<b>Bemerkung:</b> {{ call.bemerkungen }}
+							{% endif %}
+
+							{% if call.personen %}
+								<br>
+								<b>Für:</b>
+								{% for person in call.personen %}
+									{{ person }}{% if not loop.last %},{% endif %}
+								{% endfor %}
+							{% endif %}
+						</div>
+					</div>
+
 				</div>
 			{% endfor %}
 		{% endif %}
