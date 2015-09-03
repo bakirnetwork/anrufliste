@@ -15,13 +15,16 @@ function getCallArray() {
 			if ($row['done_date'] == NULL) {
 
 				$callArray[] = array(
-					'id'       => $row['id'],
-					'vorname'  => $row['contact_forname'],
-					'nachname' => $row['contact_lastname'],
-					'telefon'  => $row['contact_phone'],
-					'datum'    => getDateString(strtotime($row['call_date'])),
-					'betreff'  => $row['call_subject'],
-					'personen' => getAssignedUserIDs($row['id'])
+					'id'          => $row['id'],
+					'vorname'     => $row['contact_forname'],
+					'nachname'    => $row['contact_lastname'],
+					'telefon'     => $row['contact_phone'],
+					'datum_rund'  => getDateString(strtotime($row['call_date'])),
+					'datum'       => date('d.m.o H:i', strtotime($row['call_date'])),
+					'betreff'     => $row['call_subject'],
+					'bemerkungen' => $row['call_notes'],
+					'ersteller_id'=> $row['create_person'],
+					'personen_id' => getAssignedUserIDs($row['id'])
 				);
 			}
 		}

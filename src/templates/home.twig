@@ -109,17 +109,17 @@
 		{% if calls_undone %}
 			<h2 class="px2 mt4 h3 regular muted">Anrufe</h2>
 			{% for call in calls_undone %}
-				<div class="clearfix p2 border rounded mb2{% if not user_id in call.personen %} bg-silver{% else %} bg-white{% endif %}">
+				<div class="clearfix p2 border rounded mb2{% if not user_id in call.personen_id %} bg-silver{% else %} bg-white{% endif %}">
 					<div class="col col-11 clearfix" style="margin-top: .45rem;">
 						<div class="col col-12 md-col-4">
 							{{ call.vorname }} {{ call.nachname }}
 							{% if call.telefon %}<span class="gray">({{ call.telefon }})</span>{% endif %}
 						</div>
-						<div class="col col-12 md-col-7 gray">{{ call.datum }}: {{ call.betreff }}...</div>
+						<div class="col col-12 md-col-7 gray">{{ call.datum_rund }}: {{ call.betreff }}...</div>
 					</div>
 
 					<div class="col-right col-1 right-align">
-						{% if user_id in call.personen %}
+						{% if user_id in call.personen_id %}
 							<form action="{{ f_home_path }}" method="post">
 								<input type="hidden" name="{{ f_call_done_id }}" value="{{ call.id }}">
 								<button class="button bg-white gray" name="{{ f_call_done_submit }}" value="true" type="submit">{{ icon.place('check') }}</button>
@@ -133,18 +133,18 @@
 		{% if calls_done %}
 			<h2 class="px2 mt4 h3 regular muted">Erledigt</h2>
 			{% for call in calls_done %}
-				<div class="clearfix p2 border rounded mb2 bg-white{% if not user_id in call.personen %} bg-silver{% else %} bg-white{% endif %}">
+				<div class="clearfix p2 border rounded mb2 bg-white{% if not user_id in call.personen_id %} bg-silver{% else %} bg-white{% endif %}">
 
 					<div class="col col-11 clearfix" style="margin-top: .45rem;">
 						<div class="col col-12 md-col-4">
 							{{ call.vorname }} {{ call.nachname }}
 							{% if call.telefon %}<span class="gray">({{ call.telefon }})</span>{% endif %}
 						</div>
-						<div class="col col-12 md-col-7 gray">{{ call.datum }}: {{ call.betreff }}...</div>
+						<div class="col col-12 md-col-7 gray">{{ call.datum_rund }}: {{ call.betreff }}...</div>
 					</div>
 
 					<div class="col-right col-1 right-align">
-						{% if user_id in call.personen %}
+						{% if user_id in call.personen_id %}
 							<form action="{{ f_home_path }}" method="post">
 								<input type="hidden" name="{{ f_call_undo_id }}" value="{{ call.id }}">
 								<button class="button bg-white gray" name="{{ f_call_undo_submit }}" value="true" type="submit">{{ icon.place('refresh') }}</button>
