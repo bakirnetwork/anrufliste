@@ -141,7 +141,9 @@ if (getLogState()) {
 				$message .= 'von @' . getSingleUserData('name') . ' zugewiesen. ';
 				$message .= '<http://' . $_SERVER['SERVER_NAME'] . '|Hier ansehen> für Details.';
 
-				$slack->send($message);
+				if (SLACK_WEBHOOK) {
+					$slack->send($message);
+				}
 
 				header('Location: index.php?site=home');
 			} else {
