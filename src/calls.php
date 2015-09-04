@@ -59,6 +59,7 @@ function getDoneCallArray() {
 					'betreff'     => $row['call_subject'],
 					'bemerkungen' => $row['call_notes'],
 					'ersteller'   => getUserData(['id' => $row['create_person']])['name'],
+					'personen_id' => getAssignedUserIDs($row['id']),
 					'personen'    => getAssignedUserNames($row['id'])
 				);
 			}
