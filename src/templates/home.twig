@@ -80,12 +80,40 @@
 			content: "";
 			position: absolute;
 		}
-
 	</style>
 {% endblock %}
 
-{% block foot %}
+{% block content %}
+	{% include 'header.twig' %}
 
+	<div class="container">
+
+		{% if not calls_done and not calls_undone %}
+			<p class="mt4 h3 regular">Keine Anrufe vorhanden.</p>
+			<p class="muted">
+				Erstellen Sie einen neuen Anruf,
+				indem Sie oben rechts auf „Neuer Anruf“ klicken.
+			</p>
+		{% endif %}
+
+		{% include 'calls.twig' with {
+			'title': 'Anrufe',
+			'calls': calls_undone,
+			'action': 'done'
+		} %}
+
+		{% include 'calls.twig' with {
+			'title': 'Erledigt',
+			'calls': calls_done,
+			'action': 'undone'
+		} %}
+
+	</div>
+
+	{% include 'call_modal.twig' %}
+{% endblock %}
+
+{% block foot %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-powertip/1.2.0/jquery.powertip.min.js"></script>
 
@@ -114,181 +142,4 @@
 		});
 
 	</script>
-
-{% endblock %}
-
-{% block content %}
-
-	<header class="clearfix p2 white mb3" style="background-color: #e9399b;">
-		<h1 class="col h3 m0" style="margin-top: .3rem;">Bakir Immobilien Anrufe</h1>
-		<nav class="col-right">
-			<form class="inline" action="{{ f_home_path }}" method="post">
-				<button class="button button-narrow" style="background: none;" name="{{ f_logout_submit }}" value="true" type="submit">{{ user_name }} abmelden</button>
-			</form>
-			<a class="button button-narrow mr2" style="background: none;" href="{{ f_account_path }}">{{ icon.place('cog') }}</a>
-			<button class="button bg-white" id="new-call" style="color: #e9399b;">Neuer Anruf</button>
-		</nav>
-	</header>
-
-	<div class="container">
-
-		{% if not calls_done and not calls_undone %}
-			<p class="mt4 h3 regular">Keine Anrufe vorhanden.</p>
-			<p class="muted">
-				Erstellen Sie einen neuen Anruf,
-				indem Sie oben rechts auf „Neuer Anruf“ klicken.
-			</p>
-		{% endif %}
-
-		{% if calls_undone %}
-			<h2 class="px2 mt4 h3 regular muted">Anrufe</h2>
-			{% for call in calls_undone %}
-				<div class="tooltip clearfix p2 border rounded mb2{% if not user_id in call.personen_id %} bg-silver{% else %} bg-white{% endif %}">
-
-					<div class="col col-11 clearfix" style="margin-top: .45rem;">
-						<div class="col col-12 md-col-4">
-							{{ call.vorname }} {{ call.nachname }}
-							{% if call.telefon %}<span class="gray">({{ call.telefon }})</span>{% endif %}
-						</div>
-						<div class="col col-12 md-col-7 gray">{{ call.datum_rund }}: {{ call.betreff }}...</div>
-					</div>
-
-					<div class="col-right col-1 right-align">
-						{% if user_id in call.personen_id %}
-							<form action="{{ f_home_path }}" method="post">
-								<input type="hidden" name="{{ f_call_done_id }}" value="{{ call.id }}">
-								<button class="button bg-white gray" name="{{ f_call_done_submit }}" value="true" type="submit">{{ icon.place('check') }}</button>
-							</form>
-						{% endif %}
-					</div>
-
-					<div class="tooltip-content-wrapper">
-						<div class="tooltip-content">
-							<b>Erstellt:</b> {{ call.datum }} von {{ call.ersteller }}
-
-							{% if call.bemerkungen %}
-								<br>
-								<b>Bemerkung:</b> {{ call.bemerkungen }}
-							{% endif %}
-
-							{% if call.personen %}
-								<br>
-								<b>Für:</b>
-								{% for person in call.personen %}
-									{{ person }}{% if not loop.last %},{% endif %}
-								{% endfor %}
-							{% endif %}
-						</div>
-					</div>
-
-				</div>
-			{% endfor %}
-		{% endif %}
-
-		{% if calls_done %}
-			<h2 class="px2 mt4 h3 regular muted">Erledigt</h2>
-			{% for call in calls_done %}
-				<div class="tooltip clearfix p2 border rounded mb2 bg-white{% if not user_id in call.personen_id %} bg-silver{% else %} bg-white{% endif %}">
-
-					<div class="col col-11 clearfix" style="margin-top: .45rem;">
-						<div class="col col-12 md-col-4">
-							{{ call.vorname }} {{ call.nachname }}
-							{% if call.telefon %}<span class="gray">({{ call.telefon }})</span>{% endif %}
-						</div>
-						<div class="col col-12 md-col-7 gray">{{ call.datum_rund }}: {{ call.betreff }}...</div>
-					</div>
-
-					<div class="col-right col-1 right-align">
-						{% if user_id in call.personen_id %}
-							<form action="{{ f_home_path }}" method="post">
-								<input type="hidden" name="{{ f_call_undo_id }}" value="{{ call.id }}">
-								<button class="button bg-white gray" name="{{ f_call_undo_submit }}" value="true" type="submit">{{ icon.place('refresh') }}</button>
-							</form>
-						{% endif %}
-					</div>
-
-					<div class="tooltip-content-wrapper">
-						<div class="tooltip-content">
-							<b>Erstellt:</b> {{ call.datum }} von {{ call.ersteller }}
-
-							{% if call.bemerkungen %}
-								<br>
-								<b>Bemerkung:</b> {{ call.bemerkungen }}
-							{% endif %}
-
-							{% if call.personen %}
-								<br>
-								<b>Für:</b>
-								{% for person in call.personen %}
-									{{ person }}{% if not loop.last %},{% endif %}
-								{% endfor %}
-							{% endif %}
-						</div>
-					</div>
-
-				</div>
-			{% endfor %}
-		{% endif %}
-
-	</div>
-
-	<div class="mdl-modal{% if call_new_error != 0 %} mdl-show{% endif %}" id="new-call-modal">
-		<form class="p3 border rounded bg-white mdl-box" action="{{ f_home_path }}" method="post">
-
-			<h3 class="mt0 mb2">Neuer Anruf</h3>
-
-			{% if call_new_error == 1 %}
-				<p class="container center p2 mb2 bg-yellow rounded">Der Anruf konnte leider nicht erstellt werden.</p>
-			{% elseif call_new_error == 2 %}
-				<p class="container center p2 mb2 bg-yellow rounded">Bitte füllen Sie die markierten Felder aus!</p>
-			{% endif %}
-
-			<div class="clearfix mxn1 mb1">
-				<div class="col col-4 p1">
-					<label class="block mb1" for="contact_forname">Vorname *</label>
-					<input class="block full-width field-light" name="{{ f_call_new_forename }}" id="contact_forname" type="text" value="{{ f_fields_call_new.forename }}">
-				</div>
-				<div class="col col-4 p1">
-					<label class="block mb1" for="contact_lastname">Nachname *</label>
-					<input class="block full-width field-light" name="{{ f_call_new_lastname }}" id="contact_lastname" type="text" value="{{ f_fields_call_new.lastname }}">
-				</div>
-				<div class="col col-4 p1">
-					<label class="block mb1" for="contact_phone">Telefonnummer *</label>
-					<input class="block full-width field-light" name="{{ f_call_new_phone }}" id="contact_phone" type="text" value="{{ f_fields_call_new.phone }}">
-				</div>
-			</div>
-
-			<div class="clearfix mxn1 mb1">
-				<div class="col col-6 p1">
-					<label class="block mb1" for="subject">Betreff *</label>
-					<input class="block full-width field-light mb2" name="{{ f_call_new_subject }}" id="subject" type="text" value="{{ f_fields_call_new.subject }}">
-
-					<label class="block mb1" for="notes">Bemerkungen</label>
-					<textarea class="full-width field-light"  name="{{ f_call_new_notes }}" style="resize: vertical;" id="notes" type="text" value="{{ f_fields_call_new.notes }}"></textarea>
-				</div>
-
-				<div class="col col-6 p1">
-					<label class="block mb1">Anruf für *</label>
-
-					<div class="flex flex-wrap">
-						{% for user in users %}
-							<div class="mr2 mb2">
-								<input id="user_{{ user.id }}" name="{{ f_call_new_assignments }}[]" type="checkbox" value="{{ user.id }}" {% if user.id in f_fields_call_new.assignments %}checked{% endif %}>
-								<label for="user_{{ user.id }}">{{ user.name }}</label>
-							</div>
-						{% endfor %}
-					</div>
-				</div>
-			</div>
-
-			<div class="mt2">
-				<button class="button" name="{{ f_call_new_submit }}" value="true" type="submit">Fertig</button>
-				<button class="button bg-gray" id="cancel" type="button">Abbrechen</button>
-			</div>
-
-		</form>
-	</div>
-
-	<div id="overlay" class="mdl-overlay"></div>
-
 {% endblock %}

@@ -1,0 +1,34 @@
+<div class="tooltip clearfix p2 border rounded mb2 bg-white">
+
+	<div class="col col-11 clearfix" style="margin-top: .45rem;">
+		<div class="col col-12 md-col-4">
+			{{ call.vorname }} {{ call.nachname }}
+			{% if call.telefon %}<span class="gray">({{ call.telefon }})</span>{% endif %}
+		</div>
+		<div class="col col-12 md-col-7 gray">{{ call.datum_rund }}: {{ call.betreff }}...</div>
+	</div>
+
+	<div class="col-right col-1 right-align">
+		{% block actions %}{% endblock %}
+	</div>
+
+	<div class="tooltip-content-wrapper">
+		<div class="tooltip-content">
+			<b>Erstellt:</b> {{ call.datum }} von {{ call.ersteller }}
+
+			{% if call.bemerkungen %}
+				<br>
+				<b>Bemerkung:</b> {{ call.bemerkungen }}
+			{% endif %}
+
+			{% if call.personen %}
+				<br>
+				<b>Für:</b>
+				{% for person in call.personen %}
+					{{ person }}{% if not loop.last %},{% endif %}
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+
+</div>

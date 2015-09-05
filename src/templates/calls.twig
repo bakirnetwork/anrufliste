@@ -1,0 +1,22 @@
+{% if calls %}
+
+	<h2 class="px2 mt4 h3 regular muted">{{ title }}</h2>
+	{% for call in calls %}
+		{% embed 'call.twig' %}
+			{% block actions %}
+				{% if user_id in call.personen_id %}
+					<form action="{{ f_home_path }}" method="post">
+						{% if action == 'done' %}
+							<input type="hidden" name="{{ f_call_done_id }}" value="{{ call.id }}">
+							<button class="button bg-white gray" name="{{ f_call_done_submit }}" value="true" type="submit">{{ icon.place('check') }}</button>
+						{% elseif action == 'undone' %}
+							<input type="hidden" name="{{ f_call_undo_id }}" value="{{ call.id }}">
+							<button class="button bg-white gray" name="{{ f_call_undo_submit }}" value="true" type="submit">{{ icon.place('refresh') }}</button>
+						{% endif %}
+					</form>
+				{% endif %}
+			{% endblock %}
+		{% endembed %}
+	{% endfor %}
+	
+{% endif %}
