@@ -1,0 +1,78 @@
+.mdl-modal {
+	position: absolute;
+	top: 50%;
+	right: 50%;
+	left: 50%;
+	z-index: 2000;
+	width: 90%;
+	max-width: 750px;
+	visibility: hidden;
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	-ms-transform:     translateX(-50%) translateY(-50%);
+	transform:         translateX(-50%) translateY(-50%);
+}
+
+.mdl-modal.mdl-show {
+	visibility: visible;
+}
+
+.mdl-overlay {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	background: rgba(0,0,0,0.5);
+	visibility: hidden;
+	opacity: 0;
+	-webkit-transition: all .6s;
+	transition: all .6s;
+}
+
+.mdl-show ~ .mdl-overlay {
+	visibility: visible;
+	opacity: 1;
+}
+
+.mdl-box {
+	position: relative;
+	border-radius: 5px;
+	overflow: hidden;
+	opacity: 0;
+	-webkit-transform: scale(0.7);
+	-ms-transform:     scale(0.7);
+	transform:         scale(0.7);
+	-webkit-transition: all .6s;
+	transition: all .6s;
+}
+
+.mdl-modal.mdl-show > .mdl-box {
+	opacity: 1;
+	-webkit-transform: scale(1);
+	-ms-transform:     scale(1);
+	transform:         scale(1);
+}
+
+.tooltip-content-wrapper {
+	display: none;
+}
+
+/* PowerTip Plugin */
+#powerTip {
+	cursor: default;
+	background-color: rgba(255, 255, 255, 0.6);
+	border-radius: 3px;
+
+	border: 1px solid rgba(0,0,0,.125);
+
+	display: none;
+	padding: 10px;
+	position: absolute;
+	white-space: nowrap;
+	z-index: 2147483647;
+}
+#powerTip:before {
+	content: "";
+	position: absolute;
+}
