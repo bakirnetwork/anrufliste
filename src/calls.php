@@ -1,75 +1,5 @@
 <?php
 
-function getCallArray() {
-	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
-
-	$query = 'SELECT * FROM ' . DB_PREFIX . DB_CALLS . ' WHERE 1 ORDER BY call_date';
-
-	$calls = queryMySQLData($query);
-
-	$callArray = array();
-
-	if ($calls != NULL) {
-
-		while($row = $calls->fetch_array()) {
-			if ($row['done_date'] == NULL) {
-
-				$callArray[] = array(
-					'id'          => $row['id'],
-					'vorname'     => $row['contact_forname'],
-					'nachname'    => $row['contact_lastname'],
-					'telefon'     => $row['contact_phone'],
-					'datum_rund'  => getDateString(strtotime($row['call_date'])),
-					'datum'       => date('d.m.o H:i', strtotime($row['call_date'])),
-					'betreff'     => $row['call_subject'],
-					'bemerkungen' => $row['call_notes'],
-					'ersteller_id'=> $row['create_person'],
-					'ersteller'   => getUserData(['id' => $row['create_person']])['name'],
-					'personen_id' => getAssignedUserIDs($row['id']),
-					'personen'    => getAssignedUserNames($row['id'])
-				);
-			}
-		}
-
-	}
-
-	return $callArray;
-}
-
-function getDoneCallArray() {
-	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
-
-	$query = 'SELECT * FROM ' . DB_PREFIX . DB_CALLS.' WHERE 1 ORDER BY done_date DESC';
-
-	$calls = queryMySQLData($query);
-
-	$callArray = array();
-
-	if ($calls != NULL) {
-		while($row = $calls->fetch_array()) {
-			if ($row['done_date'] != NULL) {
-
-				$callArray[] = array(
-					'id'          => $row['id'],
-					'vorname'     => $row['contact_forname'],
-					'nachname'    => $row['contact_lastname'],
-					'telefon'     => $row['contact_phone'],
-					'datum_rund'  => getDateString(strtotime($row['call_date'])),
-					'datum'       => date('d.m.o H:i', strtotime($row['call_date'])),
-					'betreff'     => $row['call_subject'],
-					'bemerkungen' => $row['call_notes'],
-					'ersteller_id'=> $row['create_person'],
-					'ersteller'   => getUserData(['id' => $row['create_person']])['name'],
-					'personen_id' => getAssignedUserIDs($row['id']),
-					'personen'    => getAssignedUserNames($row['id'])
-				);
-			}
-		}
-	}
-
-	return $callArray;
-}
-
 function getDateString($call_time) {
 
 	$etime = time() - $call_time;
@@ -222,4 +152,61 @@ function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subj
 	}
 
 	return queryMySQLData($query);
+}
+
+function getCallDetails($row) {
+	return array(
+		'id'          => $row['id'],
+		'vorname'     => $row['contact_forname'],
+		'nachname'    => $row['contact_lastname'],
+		'telefon'     => $row['contact_phone'],
+		'datum_rund'  => getDateString(strtotime($row['call_date'])),
+		'datum'       => date('d.m.o H:i', strtotime($row['call_date'])),
+		'betreff'     => $row['call_subject'],
+		'bemerkungen' => $row['call_notes'],
+		'ersteller_id'=> $row['create_person'],
+		'ersteller'   => getUserData(['id' => $row['create_person']])['name'],
+		'personen_id' => getAssignedUserIDs($row['id']),
+		'personen'    => getAssignedUserNames($row['id'])
+	);
+}
+
+function getCallArray() {
+	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
+
+	$query = 'SELECT * FROM ' . DB_PREFIX . DB_CALLS . ' WHERE 1 ORDER BY call_date';
+
+	$calls = queryMySQLData($query);
+
+	$callArray = array();
+
+	if ($calls != NULL) {
+		while($row = $calls->fetch_array()) {
+			if ($row['done_date'] == NULL) {
+				$callArray[] = getCallDetails($row);
+			}
+		}
+	}
+
+	return $callArray;
+}
+
+function getDoneCallArray() {
+	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
+
+	$query = 'SELECT * FROM ' . DB_PREFIX . DB_CALLS.' WHERE 1 ORDER BY done_date DESC';
+
+	$calls = queryMySQLData($query);
+
+	$callArray = array();
+
+	if ($calls != NULL) {
+		while($row = $calls->fetch_array()) {
+			if ($row['done_date'] != NULL) {
+				$callArray[] = getCallDetails($row);
+			}
+		}
+	}
+
+	return $callArray;
 }
