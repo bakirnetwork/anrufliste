@@ -4,7 +4,7 @@
 	{% for call in calls %}
 		{% embed 'call.twig' %}
 			{% block actions %}
-				{% if user_id in call.assigned_ids %}
+				{% if call.editable %}
 					<form action="{{ f_home_path }}" method="post">
 						{% if action == 'done' %}
 							<input type="hidden" name="{{ f_call_done_id }}" value="{{ call.id }}">
@@ -18,5 +18,5 @@
 			{% endblock %}
 		{% endembed %}
 	{% endfor %}
-	
+
 {% endif %}
