@@ -154,6 +154,14 @@ function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subj
 	return queryMySQLData($query);
 }
 
+function isEditable($row) {
+	$currentUser = getLogState();
+	foreach (getAssignedUserIDs($row['id']) as $id) {
+		if ($currentUser == $id) { return true; }
+	}
+	return false;
+}
+
 function getCallDetails($row) {
 	return array(
 		'id'               =>   $row['id'],
@@ -166,8 +174,17 @@ function getCallDetails($row) {
 		'notes'            =>   $row['call_notes'],
 		'creator_id'       =>   $row['create_person'],
 		'creator_name'     =>   getUserData(['id' => $row['create_person']])['name'],
-		'assigned_ids'     =>   getAssignedUserIDs($row['id']),
-		'assigned_names'   =>   getAssignedUserNames($row['id'])
+		'editable'         =>   isEditable($row),
+		'assigned'         =>   [
+			[
+				'id'          => 14, // placeholder
+				'username'    => 'niklas.ravnsborg' // placeholder
+			],
+			[
+				'id'          => 4, // placeholder
+				'username'    => 'jacqueline.bakir' // placeholder
+			]
+		]
 	);
 }
 
