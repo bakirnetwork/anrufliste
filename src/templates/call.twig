@@ -2,10 +2,10 @@
 
 	<div class="col col-11 clearfix" style="margin-top: .45rem;">
 		<div class="col col-12 md-col-4">
-			{{ call.vorname }} {{ call.nachname }}
-			{% if call.telefon %}<span class="gray">({{ call.telefon }})</span>{% endif %}
+			{{ call.forname }} {{ call.lastname }}
+			{% if call.phone %}<span class="gray">({{ call.phone }})</span>{% endif %}
 		</div>
-		<div class="col col-12 md-col-7 gray">{{ call.datum_rund }}: {{ call.betreff }}...</div>
+		<div class="col col-12 md-col-7 gray">{{ call.date_short }}: {{ call.subject }}...</div>
 	</div>
 
 	<div class="col-right col-1 right-align">
@@ -14,17 +14,17 @@
 
 	<div class="tooltip-content-wrapper">
 		<div class="tooltip-content">
-			<b>Erstellt:</b> {{ call.datum }} von {{ call.ersteller }}
+			<b>Erstellt:</b> {{ call.date }} von {{ call.creator_name }}
 
-			{% if call.bemerkungen %}
+			{% if call.notes %}
 				<br>
-				<b>Bemerkung:</b> {{ call.bemerkungen }}
+				<b>Bemerkung:</b> {{ call.notes }}
 			{% endif %}
 
-			{% if call.personen %}
+			{% if call.assigned_names %}
 				<br>
 				<b>Für:</b>
-				{% for person in call.personen %}
+				{% for person in call.assigned_names %}
 					{{ person }}{% if not loop.last %},{% endif %}
 				{% endfor %}
 			{% endif %}

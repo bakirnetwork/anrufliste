@@ -156,18 +156,18 @@ function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subj
 
 function getCallDetails($row) {
 	return array(
-		'id'          => $row['id'],
-		'vorname'     => $row['contact_forname'],
-		'nachname'    => $row['contact_lastname'],
-		'telefon'     => $row['contact_phone'],
-		'datum_rund'  => getDateString(strtotime($row['call_date'])),
-		'datum'       => date('d.m.o H:i', strtotime($row['call_date'])),
-		'betreff'     => $row['call_subject'],
-		'bemerkungen' => $row['call_notes'],
-		'ersteller_id'=> $row['create_person'],
-		'ersteller'   => getUserData(['id' => $row['create_person']])['name'],
-		'personen_id' => getAssignedUserIDs($row['id']),
-		'personen'    => getAssignedUserNames($row['id'])
+		'id'               =>   $row['id'],
+		'forname'          =>   $row['contact_forname'],
+		'lastname'         =>   $row['contact_lastname'],
+		'phone'            =>   $row['contact_phone'],
+		'date_short'       =>   getDateString(strtotime($row['call_date'])),
+		'date'             =>   date('d.m.o H:i', strtotime($row['call_date'])),
+		'subject'          =>   $row['call_subject'],
+		'notes'            =>   $row['call_notes'],
+		'creator_id'       =>   $row['create_person'],
+		'creator_name'     =>   getUserData(['id' => $row['create_person']])['name'],
+		'assigned_ids'     =>   getAssignedUserIDs($row['id']),
+		'assigned_names'   =>   getAssignedUserNames($row['id'])
 	);
 }
 
