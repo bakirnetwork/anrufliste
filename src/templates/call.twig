@@ -14,7 +14,7 @@
 
 	<div class="tooltip-content-wrapper">
 		<div class="tooltip-content">
-			<b>Erstellt:</b> {{ call.date }} von {{ call.creator_name }}
+			<b>Erstellt:</b> {{ call.date }} von {{ call.creator.username }}
 
 			{% if call.notes %}
 				<br>

@@ -155,11 +155,27 @@ function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subj
 }
 
 function isEditable($row) {
-	$currentUser = getLogState();
+	$currentUserID = getLogState();
 	foreach (getAssignedUserIDs($row['id']) as $id) {
-		if ($currentUser == $id) { return true; }
+		if ($currentUserID == $id) { return true; }
 	}
 	return false;
+}
+
+function getAssignedUsersArray($row) {
+	$userArrays = [];
+	foreach (getAssignedUserIDs($row['id']) as $id) {
+		$userArrays[] = getUserArray($id);
+	}
+	return $userArrays;
+}
+
+function getUserArray($id) {
+	$user = getUserData(['id' => $id]);
+	return [
+		'id'       => $id,
+		'username' => $user['name']
+	];
 }
 
 function getCallDetails($row) {
@@ -172,19 +188,9 @@ function getCallDetails($row) {
 		'date'             =>   date('d.m.o H:i', strtotime($row['call_date'])),
 		'subject'          =>   $row['call_subject'],
 		'notes'            =>   $row['call_notes'],
-		'creator_id'       =>   $row['create_person'],
-		'creator_name'     =>   getUserData(['id' => $row['create_person']])['name'],
-		'editable'         =>   isEditable($row),
-		'assigned'         =>   [
-			[
-				'id'          => 14, // placeholder
-				'username'    => 'niklas.ravnsborg' // placeholder
-			],
-			[
-				'id'          => 4, // placeholder
-				'username'    => 'jacqueline.bakir' // placeholder
-			]
-		]
+		'creator'          =>   getUserArray($row['create_person']),
+		'assigned'         =>   getAssignedUsersArray($row),
+		'editable'         =>   isEditable($row)
 	);
 }
 
