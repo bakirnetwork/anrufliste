@@ -5,7 +5,14 @@
 			{{ call.forname }} {{ call.lastname }}
 			{% if call.phone %}<span class="gray">({{ call.phone }})</span>{% endif %}
 		</div>
-		<div class="col col-12 md-col-7 gray">{{ call.date_short }}: {{ call.subject }}...</div>
+		<div class="col col-12 md-col-8 gray">
+			{{ call.date_short }}: {{ call.subject }}...
+			{% for assignee in call.assigned %}
+				<div class="right inline-block ml1 h5 white center bg-{{ assignee.color }} circle" style="width: 32px; height: 32px;">
+					<span style="line-height: 32px;">{{ assignee.initials }}</span>
+				</div>
+			{% endfor %}
+		</div>
 	</div>
 
 	<div class="col-right col-1 right-align">

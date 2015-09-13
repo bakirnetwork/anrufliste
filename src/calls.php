@@ -170,12 +170,40 @@ function getAssignedUsersArray($row) {
 	return $userArrays;
 }
 
+function getInitials($fullname) {
+	if (empty($fullname)) {
+		return '';
+	}
+
+	$words    = explode(' ', $fullname); // separate words
+	$initials = $words[0][0] . $words[1][0]; // use first char of first two words
+
+	// substr($words[0], 0, 1) . substr($words[1], 0, 1);
+	return $initials;
+}
+
+function getUserColor($string) {
+	$colors = ['orange', 'purple', 'navy', 'blue', 'green', 'olive', 'lime', 'yellow', 'gray', 'red', 'teal', 'maroon'];
+
+	$index = 0;
+
+	// generate number to input string
+	for ($i = 0; $i < strlen($string); $i++) {
+		$index += ord($string[$i]);
+	}
+
+	$index %= count($colors); // mod index to size of `$colors` array
+	return $colors[$index]; // return color
+}
+
 function getUserArray($id) {
 	$user = getUserData(['id' => $id]);
 	return [
 		'id'       => $id,
 		'username' => $user['name'],
-		'fullname' => $user['fullname']
+		'fullname' => $user['fullname'],
+		'initials' => getInitials($user['fullname']),
+		'color'    => getUserColor($user['fullname'])
 	];
 }
 
