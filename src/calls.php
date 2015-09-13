@@ -174,7 +174,8 @@ function getUserArray($id) {
 	$user = getUserData(['id' => $id]);
 	return [
 		'id'       => $id,
-		'username' => $user['name']
+		'username' => $user['name'],
+		'fullname' => $user['fullname']
 	];
 }
 

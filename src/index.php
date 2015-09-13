@@ -16,6 +16,9 @@ $context = array();
 // init php-components
 initLogSys();
 
+// add custom column for fullname
+addCustomFields(['fullname' => 'VARCHAR(100)']);
+
 // init general variables
 $page = 'login';
 // meaning of error variables
