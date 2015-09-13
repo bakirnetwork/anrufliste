@@ -14,7 +14,7 @@
 
 	<div class="tooltip-content-wrapper">
 		<div class="tooltip-content">
-			<b>Erstellt:</b> {{ call.date }} von {{ call.creator.username }}
+			<b>Erstellt:</b> {{ call.date }} von {{ call.creator.fullname }}
 
 			{% if call.notes %}
 				<br>
@@ -25,7 +25,7 @@
 				<br>
 				<b>Für:</b>
 				{% for assignee in call.assigned %}
-					{{ assignee.username }}{% if not loop.last %},{% endif %}
+					{{ assignee.fullname }}{% if not loop.last %},{% endif %}
 				{% endfor %}
 			{% endif %}
 		</div>

@@ -40,7 +40,7 @@
 					{% for user in users %}
 						<div class="mr2 mb2">
 							<input id="user_{{ user.id }}" name="{{ f_call_new_assignments }}[]" type="checkbox" value="{{ user.id }}" {% if user.id in f_fields_call_new.assignments %}checked{% endif %}>
-							<label for="user_{{ user.id }}">{{ user.name }}</label>
+							<label for="user_{{ user.id }}">{{ user.fullname }}</label>
 						</div>
 					{% endfor %}
 				</div>

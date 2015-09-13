@@ -286,8 +286,9 @@ if (isset($_GET['site'])) {
 
 			while($row = $userList->fetch_array()) {
 				$users[] = array(
-					'id'   => $row['id'],
-					'name' => $row['name']
+					'id'        =>  $row['id'],
+					'username'  =>  $row['name'],
+					'fullname'  =>  $row['fullname']
 				);
 			}
 
