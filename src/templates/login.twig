@@ -25,12 +25,12 @@
 			<form action="{{ f_login_path }}" method="post">
 				<div class="mb2">
 					<label for="username">Benutzername</label>
-					<input class="field-light full-width" id="username" type="text" name="{{ f_login_user }}" value="{{ f_fields_login.username }}">
+					<input class="field col-12" id="username" type="text" name="{{ f_login_user }}" value="{{ f_fields_login.username }}">
 				</div>
 
 				<div class="mb1">
 					<label for="password">Passwort</label>
-					<input class="field-light full-width" id="password" type="password" name="{{ f_login_password }}">
+					<input class="field col-12" id="password" type="password" name="{{ f_login_password }}">
 				</div>
 
 				<div class="clearfix">
@@ -39,7 +39,7 @@
 						<label for="keeplog">Angemeldet bleiben</label>
 					</div>
 					<div class="sm-col sm-col-4 mt2 clearfix">
-						<button class="sm-col-right button" type="submit" name="{{ f_login_submit }}">Anmelden</button>
+						<button class="sm-col-right btn btn-primary" type="submit" name="{{ f_login_submit }}">Anmelden</button>
 					</div>
 				</div>
 			</form>

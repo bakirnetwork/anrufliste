@@ -2,9 +2,9 @@
 	<h1 class="col h3 m0" style="margin-top: .3rem;">Bakir Immobilien Anrufe</h1>
 	<nav class="col-right">
 		<form class="inline" action="{{ f_home_path }}" method="post">
-			<button class="button button-narrow" style="background: none;" name="{{ f_logout_submit }}" value="true" type="submit">{{ user_name }} abmelden</button>
+			<button class="btn btn-primary" style="background: none;" name="{{ f_logout_submit }}" value="true" type="submit">{{ user_name }} abmelden</button>
 		</form>
-		<a class="button button-narrow mr2" style="background: none;" href="{{ f_account_path }}">{{ icon.place('cog') }}</a>
-		<button class="button bg-white" id="new-call" style="color: #e9399b;">Neuer Anruf</button>
+		<a class="btn btn-primary mr2" style="background: none;" href="{{ f_account_path }}">{{ icon.place('cog') }}</a>
+		<button class="btn btn-primary bg-white" id="new-call" style="color: #e9399b;">Neuer Anruf</button>
 	</nav>
 </header>

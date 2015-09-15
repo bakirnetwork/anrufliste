@@ -8,10 +8,10 @@
 					<form action="{{ f_home_path }}" method="post">
 						{% if action == 'done' %}
 							<input type="hidden" name="{{ f_call_done_id }}" value="{{ call.id }}">
-							<button class="button bg-white gray" name="{{ f_call_done_submit }}" value="true" type="submit">{{ icon.place('check') }}</button>
+							<button class="btn btn-primary bg-white gray" name="{{ f_call_done_submit }}" value="true" type="submit">{{ icon.place('check') }}</button>
 						{% elseif action == 'undone' %}
 							<input type="hidden" name="{{ f_call_undo_id }}" value="{{ call.id }}">
-							<button class="button bg-white gray" name="{{ f_call_undo_submit }}" value="true" type="submit">{{ icon.place('refresh') }}</button>
+							<button class="btn btn-primary bg-white gray" name="{{ f_call_undo_submit }}" value="true" type="submit">{{ icon.place('refresh') }}</button>
 						{% endif %}
 					</form>
 				{% endif %}
