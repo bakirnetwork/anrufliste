@@ -46,6 +46,9 @@ $fields_call_new = array(
 	'assignments' => [],
 );
 
+// calls which should be shown
+$view = 'calls_undone';
+
 // check whether a variable is set, if so return it else return ''
 function setPostVar($var) {
 	if (!empty($_POST[$var])) {
@@ -148,7 +151,7 @@ if (getLogState()) {
 					$slack->send($message);
 				}
 
-				header('Location: index.php?site=home');
+				header('Location: index.php?site=home&view=calls_undone');
 			} else {
 				$call_new_error = 1;
 				$set_call_new_fields = true;
@@ -174,7 +177,7 @@ if (getLogState()) {
 		if (isset($_POST['call_done_id'])) {
 			$call_done_result = callDone($_POST['call_done_id']);
 			if ($call_done_result) {
-				header('Location: index.php?site=home');
+				header('Location: index.php?site=home&view=calls_done');
 			} else {
 				$call_done_error = 1;
 			}
@@ -187,7 +190,7 @@ if (getLogState()) {
 			$call_undo_result = callUndo($_POST['call_undo_id']);
 			if ($call_undo_result) {
 				$call_undo_error = 0;
-				header('Location: index.php?site=home');
+				header('Location: index.php?site=home&view=calls_undone');
 			} else {
 				$call_undo_error = 1;
 			}
@@ -292,9 +295,15 @@ if (isset($_GET['site'])) {
 				);
 			}
 
+			if (isset($_GET['view'])) {
+				if ($_GET['view'] == 'calls_undone') { $view = 'calls_undone'; }
+				if ($_GET['view'] == 'calls_done') { $view = 'calls_done'; }
+			}
+
 			$context = array(
 				'user_name'               => getSingleUserData('name'),
 				'user_id'                 => getLogState(),
+				'view'                    => $view,
 				'calls_undone'            => getCallArray(),
 				'calls_done'              => getDoneCallArray(),
 				'users'                   => $users,
