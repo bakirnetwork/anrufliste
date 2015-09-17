@@ -5,6 +5,11 @@
 
 	<div class="container">
 
+		<div class="inline-block clearfix blue">
+			<button type="button" class="left btn {% if view == 'undone' %} btn-primary bg-gray{% else %} gray bg-white{% endif %} border-right rounded-left" id="show-calls-undone">Anrufe</button>
+			<button type="button" class="left btn {% if view == 'done' %}   btn-primary bg-gray{% else %} gray bg-white{% endif %} rounded-right" id="show-calls-done">Erledigt</button>
+		</div>
+
 		{% if not calls_done and not calls_undone %}
 			<p class="mt4 h3 regular">Keine Anrufe vorhanden.</p>
 			<p class="muted">
@@ -13,17 +18,23 @@
 			</p>
 		{% endif %}
 
-		{% include 'calls.twig' with {
+		{% set undone_params = {
 			'title': 'Anrufe',
 			'calls': calls_undone,
 			'action': 'done'
 		} %}
 
-		{% include 'calls.twig' with {
+		{% set done_params = {
 			'title': 'Erledigt',
 			'calls': calls_done,
 			'action': 'undone'
 		} %}
+
+		{% if view == 'done' %}
+			{% include 'calls.twig' with done_params %}
+		{% else %}
+			{% include 'calls.twig' with undone_params %}
+		{% endif %}
 
 	</div>
 
@@ -49,6 +60,14 @@
 		document.getElementById('new-call').onclick = function() { toggleModal(); };
 		document.getElementById('overlay').onclick  = function() { hideModal(); };
 		document.getElementById('cancel').onclick   = function() { hideModal(); };
+
+		document.getElementById('show-calls-undone').onclick = function() {
+			window.location.search = "?site=home&view=undone"
+		};
+
+		document.getElementById('show-calls-done').onclick = function() {
+			window.location.search = "?site=home&view=done"
+		};
 
 		$('.tooltip').powerTip({
 			followMouse: true
