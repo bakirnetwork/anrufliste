@@ -154,18 +154,18 @@ function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subj
 	return queryMySQLData($query);
 }
 
-function isEditable($row) {
+function isEditable($call_id, &$assignedUserIDs) {
 	$currentUserID = getLogState();
-	foreach (getAssignedUserIDs($row['id']) as $id) {
+	foreach ($assignedUserIDs as $id) {
 		if ($currentUserID == $id) { return true; }
 	}
 	return false;
 }
 
-function getAssignedUsersArray($row) {
+function getAssignedUsersArray($call_id, &$userArray, &$assignedUserIDs) {
 	$userArrays = [];
-	foreach (getAssignedUserIDs($row['id']) as $id) {
-		$userArrays[] = getUserArray($id);
+	foreach ($assignedUserIDs as $id) {
+		$userArrays[] = $userArray[$id];
 	}
 	return $userArrays;
 }
@@ -196,18 +196,29 @@ function getUserColor($string) {
 	return $colors[$index]; // return color
 }
 
-function getUserArray($id) {
-	$user = getUserData(['id' => $id]);
-	return [
-		'id'       => $id,
-		'username' => $user['name'],
-		'fullname' => $user['fullname'],
-		'initials' => getInitials($user['fullname']),
-		'color'    => getUserColor($user['fullname'])
-	];
+function getAllUsers() {
+	initTable(DB_PREFIX . DB_USERS, SQL_USERS);
+
+	$query = 'SELECT * FROM ' . DB_PREFIX . DB_USERS;
+	$users = queryMySQLData($query);
+
+	$userArray = array();
+
+	while($user = $users->fetch_array()) {
+		$userArray[$user['id']] = [
+			'username' => $user['name'],
+			'fullname' => $user['fullname'],
+			'initials' => getInitials($user['fullname']),
+			'color'    => getUserColor($user['fullname'])
+		];
+	}
+
+	return $userArray;
 }
 
-function getCallDetails($row) {
+function getCallDetails($row, &$userArray) {
+	$assignedUserIDs = getAssignedUserIDs($row['id']);
+
 	return array(
 		'id'               =>   $row['id'],
 		'forname'          =>   $row['contact_forname'],
@@ -217,9 +228,9 @@ function getCallDetails($row) {
 		'date'             =>   date('d.m.o H:i', strtotime($row['call_date'])),
 		'subject'          =>   $row['call_subject'],
 		'notes'            =>   $row['call_notes'],
-		'creator'          =>   getUserArray($row['create_person']),
-		'assigned'         =>   getAssignedUsersArray($row),
-		'editable'         =>   isEditable($row)
+		'creator'          =>   $userArray[$row['create_person']],
+		'assigned'         =>   getAssignedUsersArray($row['id'], $userArray, $assignedUserIDs),
+		'editable'         =>   isEditable($row['id'], $assignedUserIDs)
 	);
 }
 
@@ -232,10 +243,12 @@ function getCallArray() {
 
 	$callArray = array();
 
+	$userArray = getAllUsers();
+
 	if ($calls != NULL) {
 		while($row = $calls->fetch_array()) {
 			if ($row['done_date'] == NULL) {
-				$callArray[] = getCallDetails($row);
+				$callArray[] = getCallDetails($row, $userArray);
 			}
 		}
 	}
@@ -252,10 +265,12 @@ function getDoneCallArray() {
 
 	$callArray = array();
 
+	$userArray = getAllUsers();
+
 	if ($calls != NULL) {
 		while($row = $calls->fetch_array()) {
 			if ($row['done_date'] != NULL) {
-				$callArray[] = getCallDetails($row);
+				$callArray[] = getCallDetails($row, $userArray);
 			}
 		}
 	}
