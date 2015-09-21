@@ -57,6 +57,10 @@
 			modal.classList.remove('mdl-show');
 		}
 
+		document.getElementById('menu-toggle').onclick = function() {
+			document.getElementById('menu').classList.toggle('hide'); 
+		};
+
 		document.getElementById('new-call').onclick = function() { toggleModal(); };
 		document.getElementById('overlay').onclick  = function() { hideModal(); };
 		document.getElementById('cancel').onclick   = function() { hideModal(); };

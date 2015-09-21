@@ -1,10 +1,19 @@
 <header class="clearfix p2 white mb3" style="background-color: #e9399b;">
 	<h1 class="col h3 m0" style="margin-top: .3rem;">Bakir Immobilien Anrufe</h1>
 	<nav class="col-right">
-		<form class="inline" action="{{ f_home_path }}" method="post">
-			<button class="btn btn-primary" style="background: none;" name="{{ f_logout_submit }}" value="true" type="submit">{{ user_name }} abmelden</button>
-		</form>
-		<a class="btn btn-primary mr2" style="background: none;" href="{{ f_account_path }}">{{ icon.place('cog') }}</a>
+
+		<div class="relative inline-block">
+			<button class="btn btn-primary mr2" id="menu-toggle" style="background: none;">
+				{{ icon.place('cog') }}
+			</button>
+			<div class="absolute right-0 hide mt1 border rounded nowrap" id="menu">
+				<a class="btn btn-primary block p2 rounded-top gray bg-white" href="{{ f_account_path }}">Passwort ändern</a>
+				<div class="border-bottom"></div>
+				<form class="inline" action="{{ f_home_path }}" method="post">
+					<button class="btn btn-primary block p2 rounded-bottom gray bg-white" name="{{ f_logout_submit }}" value="true" type="submit">{{ user_name }} abmelden</button>
+				</form>
+			</div>
+		</div>
 		<button class="btn btn-primary bg-white" id="new-call" style="color: #e9399b;">Neuer Anruf</button>
 	</nav>
 </header>
