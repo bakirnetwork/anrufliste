@@ -5,9 +5,9 @@
 
 	<div class="container">
 
-		<div class="inline-block clearfix blue">
-			<button type="button" class="left btn {% if view == 'undone' %} btn-primary bg-gray{% else %} gray bg-white{% endif %} border-right rounded-left" id="show-calls-undone">Anrufe</button>
-			<button type="button" class="left btn {% if view == 'done' %}   btn-primary bg-gray{% else %} gray bg-white{% endif %} rounded-right" id="show-calls-done">Erledigt</button>
+		<div class="inline-block border rounded clearfix">
+			<button type="button" class="left btn btn-primary {% if view == 'undone' %}bg-gray{% else %}gray bg-white{% endif %} rounded-left" id="show-calls-undone">Anrufe</button>
+			<button type="button" class="left btn btn-primary {% if view == 'done'   %}bg-gray{% else %}gray bg-white{% endif %} rounded-right" id="show-calls-done">Erledigt</button>
 		</div>
 
 		{% if not calls_done and not calls_undone %}
@@ -58,7 +58,7 @@
 		}
 
 		document.getElementById('menu-toggle').onclick = function() {
-			document.getElementById('menu').classList.toggle('hide'); 
+			document.getElementById('menu').classList.toggle('hide');
 		};
 
 		document.getElementById('new-call').onclick = function() { toggleModal(); };
