@@ -25,7 +25,6 @@ function getDateString($call_time) {
 }
 
 function getAssignedUserIDs($call_id) {
-	initTable(DB_PREFIX . DB_ASSIGNMENTS, SQL_ASSIGNMENTS);
 
 	$query = 'SELECT user_id FROM ' . DB_PREFIX . DB_ASSIGNMENTS . ' WHERE call_id=' . $call_id;
 	$assignments = queryMySQLData($query);
@@ -40,7 +39,6 @@ function getAssignedUserIDs($call_id) {
 }
 
 function getAssignedUserNames($call_id) {
-	initTable(DB_PREFIX . DB_ASSIGNMENTS, SQL_ASSIGNMENTS);
 
 	$query = 'SELECT user_id FROM ' . DB_PREFIX . DB_ASSIGNMENTS . ' WHERE call_id=' . $call_id;
 	$result = queryMySQLData($query);
@@ -54,7 +52,6 @@ function getAssignedUserNames($call_id) {
 }
 
 function callDone($id) {
-	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
 
 	if (!is_numeric($id)) { return; }
 
@@ -69,7 +66,6 @@ function callDone($id) {
 }
 
 function callUndo($id) {
-	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
 
 	if (!is_numeric($id)) { return; }
 
@@ -82,7 +78,6 @@ function callUndo($id) {
 }
 
 function callDelete($id) {
-	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
 
 	if (!is_numeric($id)) { return; }
 
@@ -92,8 +87,6 @@ function callDelete($id) {
 }
 
 function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subject, $call_notes, $call_assignments) {
-	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
-	initTable(DB_PREFIX . DB_ASSIGNMENTS, SQL_ASSIGNMENTS);
 
 	$contact_forname = secureString($contact_forname);
 	$contact_lastname = secureString($contact_lastname);
@@ -197,7 +190,6 @@ function getUserColor($string) {
 }
 
 function getAllUsers() {
-	initTable(DB_PREFIX . DB_USERS, SQL_USERS);
 
 	$query = 'SELECT * FROM ' . DB_PREFIX . DB_USERS;
 	$users = queryMySQLData($query);
@@ -235,7 +227,6 @@ function getCallDetails($row, &$userArray) {
 }
 
 function getCallArray() {
-	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
 
 	$query = 'SELECT * FROM ' . DB_PREFIX . DB_CALLS . ' WHERE 1 ORDER BY call_date';
 
@@ -257,7 +248,6 @@ function getCallArray() {
 }
 
 function getDoneCallArray() {
-	initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
 
 	$query = 'SELECT * FROM ' . DB_PREFIX . DB_CALLS.' WHERE 1 ORDER BY done_date DESC';
 

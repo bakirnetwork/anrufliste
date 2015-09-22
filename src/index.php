@@ -16,6 +16,11 @@ $context = array();
 // init php-components
 initLogSys();
 
+// init all needed tables
+initTable(DB_PREFIX . DB_USERS, SQL_USERS);
+initTable(DB_PREFIX . DB_CALLS, SQL_CALLS);
+initTable(DB_PREFIX . DB_ASSIGNMENTS, SQL_ASSIGNMENTS);
+
 // add custom column for fullname
 addCustomFields(['fullname' => 'VARCHAR(100)']);
 
