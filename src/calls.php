@@ -24,33 +24,6 @@ function getDateString($call_time) {
 	return 'Gerade eben';
 }
 
-function getAssignedUserIDs($call_id) {
-
-	$query = 'SELECT user_id FROM ' . DB_PREFIX . DB_ASSIGNMENTS . ' WHERE call_id=' . $call_id;
-	$assignments = queryMySQLData($query);
-
-	$userArray = array();
-
-	while($call_assignment = $assignments->fetch_array()) {
-		$userArray[] = $call_assignment['user_id'];
-	}
-
-	return $userArray;
-}
-
-function getAssignedUserNames($call_id) {
-
-	$query = 'SELECT user_id FROM ' . DB_PREFIX . DB_ASSIGNMENTS . ' WHERE call_id=' . $call_id;
-	$result = queryMySQLData($query);
-
-	$assignments = array();
-	while($call_assignment = $result->fetch_array()) {
-		$name = queryMySQLData('SELECT name FROM ' . DB_PREFIX . DB_USERS . ' WHERE id=' . $call_assignment['user_id'])->fetch_array();
-		$assignments[] = $name[0];
-	}
-	return $assignments;
-}
-
 function callDone($id) {
 
 	if (!is_numeric($id)) { return; }
@@ -147,18 +120,33 @@ function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subj
 	return queryMySQLData($query);
 }
 
-function isEditable($call_id, &$assignedUserIDs) {
+function isEditable($call_id, &$assignmentsArray) {
 	$currentUserID = getLogState();
-	foreach ($assignedUserIDs as $id) {
-		if ($currentUserID == $id) { return true; }
+	foreach ($assignmentsArray as $assignment) {
+		if ($currentUserID == $assignment[0]) { return true; }
 	}
 	return false;
 }
 
-function getAssignedUsersArray($call_id, &$userArray, &$assignedUserIDs) {
+function getAllAssignments() {
+	$query = 'SELECT * FROM ' . DB_PREFIX . DB_ASSIGNMENTS;
+	$assignments = queryMySQLData($query);
+
+	$assignmentsArray = array();
+
+	while($assignment = $assignments->fetch_array()) {
+		$assignmentsArray[] = [$assignment['user_id'], $assignment['call_id']];
+	}
+
+	return $assignmentsArray;
+}
+
+function getAssignedUsersArray($call_id, &$userArray, &$assignmentsArray) {
 	$userArrays = [];
-	foreach ($assignedUserIDs as $id) {
-		$userArrays[] = $userArray[$id];
+	foreach ($assignmentsArray as $assignment) {
+		if ($assignment[1] == $call_id) {
+			$userArrays[] = $userArray[$assignment[0]];
+		}
 	}
 	return $userArrays;
 }
@@ -198,6 +186,7 @@ function getAllUsers() {
 
 	while($user = $users->fetch_array()) {
 		$userArray[$user['id']] = [
+			'id'       => $user['id'],
 			'username' => $user['name'],
 			'fullname' => $user['fullname'],
 			'initials' => getInitials($user['fullname']),
@@ -208,8 +197,7 @@ function getAllUsers() {
 	return $userArray;
 }
 
-function getCallDetails($row, &$userArray) {
-	$assignedUserIDs = getAssignedUserIDs($row['id']);
+function getCallDetails($row, &$userArray, &$assignmentsArray) {
 
 	return array(
 		'id'               =>   $row['id'],
@@ -221,12 +209,12 @@ function getCallDetails($row, &$userArray) {
 		'subject'          =>   $row['call_subject'],
 		'notes'            =>   $row['call_notes'],
 		'creator'          =>   $userArray[$row['create_person']],
-		'assigned'         =>   getAssignedUsersArray($row['id'], $userArray, $assignedUserIDs),
-		'editable'         =>   isEditable($row['id'], $assignedUserIDs)
+		'assigned'         =>   getAssignedUsersArray($row['id'], $userArray, $assignmentsArray),
+		'editable'         =>   isEditable($row['id'], $assignmentsArray)
 	);
 }
 
-function getCallArray() {
+function getCallArray(&$userArray, &$assignmentsArray) {
 
 	$query = 'SELECT * FROM ' . DB_PREFIX . DB_CALLS . ' WHERE 1 ORDER BY call_date';
 
@@ -234,12 +222,10 @@ function getCallArray() {
 
 	$callArray = array();
 
-	$userArray = getAllUsers();
-
 	if ($calls != NULL) {
 		while($row = $calls->fetch_array()) {
 			if ($row['done_date'] == NULL) {
-				$callArray[] = getCallDetails($row, $userArray);
+				$callArray[] = getCallDetails($row, $userArray, $assignmentsArray);
 			}
 		}
 	}
@@ -247,7 +233,7 @@ function getCallArray() {
 	return $callArray;
 }
 
-function getDoneCallArray() {
+function getDoneCallArray(&$userArray, &$assignmentsArray) {
 
 	$query = 'SELECT * FROM ' . DB_PREFIX . DB_CALLS.' WHERE 1 ORDER BY done_date DESC';
 
@@ -255,12 +241,10 @@ function getDoneCallArray() {
 
 	$callArray = array();
 
-	$userArray = getAllUsers();
-
 	if ($calls != NULL) {
 		while($row = $calls->fetch_array()) {
 			if ($row['done_date'] != NULL) {
-				$callArray[] = getCallDetails($row, $userArray);
+				$callArray[] = getCallDetails($row, $userArray, $assignmentsArray);
 			}
 		}
 	}

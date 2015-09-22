@@ -288,17 +288,8 @@ if (isset($_GET['site'])) {
 	} elseif ($_GET['site'] == 'home') {
 		if (getLogState()) {
 
-			$query = 'SELECT * FROM ' . DB_PREFIX . DB_USERS . ' WHERE 1';
-			$userList = queryMySQLData($query);
-			$users = array();
-
-			while($row = $userList->fetch_array()) {
-				$users[] = array(
-					'id'        =>  $row['id'],
-					'username'  =>  $row['name'],
-					'fullname'  =>  $row['fullname']
-				);
-			}
+			$userArray = getAllUsers();
+			$assignmentsArray = getAllAssignments();
 
 			if (isset($_GET['view'])) {
 				if ($_GET['view'] == 'undone') { $view = 'undone'; }
@@ -309,9 +300,9 @@ if (isset($_GET['site'])) {
 				'user_name'               => getSingleUserData('name'),
 				'user_id'                 => getLogState(),
 				'view'                    => $view,
-				'calls_undone'            => getCallArray(),
-				'calls_done'              => getDoneCallArray(),
-				'users'                   => $users,
+				'calls_undone'            => getCallArray($userArray, $assignmentsArray),
+				'calls_done'              => getDoneCallArray($userArray, $assignmentsArray),
+				'users'                   => $userArray,
 				'f_home_path'             => 'index.php?site=home',
 				'f_account_path'          => 'index.php?site=account',
 				'f_logout_submit'         => 'logout',
