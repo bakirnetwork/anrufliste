@@ -1,3 +1,6 @@
+.magenta { color: #e9399b; }
+.bg-magenta { background-color: #e9399b; }
+
 .mdl-modal {
 	position: absolute;
 	top: 50%;
