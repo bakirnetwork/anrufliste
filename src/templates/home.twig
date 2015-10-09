@@ -6,8 +6,8 @@
 	<div class="container">
 
 		<div class="inline-block border rounded clearfix">
-			<button type="button" class="left btn btn-primary {% if view == 'undone' %}bg-gray{% else %}gray bg-white{% endif %} rounded-left" id="show-calls-undone">Anrufe</button>
-			<button type="button" class="left btn btn-primary {% if view == 'done'   %}bg-gray{% else %}gray bg-white{% endif %} rounded-right" id="show-calls-done">Erledigt</button>
+			<button type="button" class="left btn btn-primary {% if view == 'undone' %}bg-magenta{% else %}gray bg-white{% endif %} rounded-left" id="show-calls-undone">Offene Anrufe</button>
+			<button type="button" class="left btn btn-primary {% if view == 'done'   %}bg-magenta{% else %}gray bg-white{% endif %} rounded-right" id="show-calls-done">Erledigte Anrufe</button>
 		</div>
 
 		{% if not calls_done and not calls_undone %}
@@ -19,13 +19,13 @@
 		{% endif %}
 
 		{% set undone_params = {
-			'title': 'Anrufe',
+			'title': 'Offene Anrufe',
 			'calls': calls_undone,
 			'action': 'done'
 		} %}
 
 		{% set done_params = {
-			'title': 'Erledigt',
+			'title': 'Erledigte Anrufe',
 			'calls': calls_done,
 			'action': 'undone'
 		} %}
