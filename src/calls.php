@@ -120,10 +120,13 @@ function newCall($contact_forname, $contact_lastname, $contact_phone, $call_subj
 	return queryMySQLData($query);
 }
 
-function isEditable($call_id, &$assignmentsArray) {
+function isEditable($callID, &$assignmentsArray) {
 	$currentUserID = getLogState();
 	foreach ($assignmentsArray as $assignment) {
-		if ($currentUserID == $assignment[0]) { return true; }
+		if ($currentUserID == $assignment[0] &&
+			$callID == $assignment[1]) {
+			return true;
+		}
 	}
 	return false;
 }
