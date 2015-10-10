@@ -200,6 +200,13 @@ function getAllUsers() {
 	return $userArray;
 }
 
+function getUserArray($userId, &$userArray) {
+	if (empty($userId)) {
+		return '';
+	}
+	return $userArray[$userId];
+}
+
 function getCallDetails($row, &$userArray, &$assignmentsArray) {
 
 	return array(
@@ -213,7 +220,9 @@ function getCallDetails($row, &$userArray, &$assignmentsArray) {
 		'notes'            =>   $row['call_notes'],
 		'creator'          =>   $userArray[$row['create_person']],
 		'assigned'         =>   getAssignedUsersArray($row['id'], $userArray, $assignmentsArray),
-		'editable'         =>   isEditable($row['id'], $assignmentsArray)
+		'editable'         =>   isEditable($row['id'], $assignmentsArray),
+		'done'             =>   getUserArray($row['done_person'], $userArray),
+		'done_date'        =>   date('d.m.o H:i', strtotime($row['done_date']))
 	);
 }
 

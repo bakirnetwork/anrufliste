@@ -38,6 +38,11 @@
 					{{ assignee.fullname }}{% if not loop.last %},{% endif %}
 				{% endfor %}
 			{% endif %}
+
+			{% if call.done %}
+				<br>
+				<b>Erledigt:</b> {{ call.done_date }} von {{ call.done.fullname }}
+			{% endif %}
 		</div>
 	</div>
 
