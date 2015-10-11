@@ -206,7 +206,7 @@ function getDoneArray($doneUserID, $doneDate, &$userArray) {
 	}
 	return [
 		'user' => $userArray[$doneUserID],
-		'date' => date('d.m.o H:i', strtotime($doneDate)
+		'date' => date('d.m.o H:i', strtotime($doneDate))
 	];
 }
 
