@@ -200,11 +200,14 @@ function getAllUsers() {
 	return $userArray;
 }
 
-function getUserArray($userId, &$userArray) {
-	if (empty($userId)) {
-		return '';
+function getDoneArray($doneUserID, $doneDate, &$userArray) {
+	if ($doneUserID == '' || $doneDate == '') {
+		return null;
 	}
-	return $userArray[$userId];
+	return [
+		'user' => $userArray[$doneUserID],
+		'date' => date('d.m.o H:i', strtotime($doneDate)
+	];
 }
 
 function getCallDetails($row, &$userArray, &$assignmentsArray) {
@@ -221,8 +224,7 @@ function getCallDetails($row, &$userArray, &$assignmentsArray) {
 		'creator'          =>   $userArray[$row['create_person']],
 		'assigned'         =>   getAssignedUsersArray($row['id'], $userArray, $assignmentsArray),
 		'editable'         =>   isEditable($row['id'], $assignmentsArray),
-		'done'             =>   getUserArray($row['done_person'], $userArray),
-		'done_date'        =>   date('d.m.o H:i', strtotime($row['done_date']))
+		'done'             =>   getDoneArray($row['done_person'], $row['done_date'], $userArray)
 	);
 }
 
@@ -257,6 +259,7 @@ function getDoneCallArray(&$userArray, &$assignmentsArray) {
 		while($row = $calls->fetch_array()) {
 			if ($row['done_date'] != NULL) {
 				$callArray[] = getCallDetails($row, $userArray, $assignmentsArray);
+				echo var_dump(getCallDetails($row, $userArray, $assignmentsArray)) . '<br><br>';
 			}
 		}
 	}
