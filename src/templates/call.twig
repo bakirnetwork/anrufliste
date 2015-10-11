@@ -41,7 +41,7 @@
 
 			{% if call.done %}
 				<br>
-				<b>Erledigt:</b> {{ call.done_date }} von {{ call.done.fullname }}
+				<b>Erledigt:</b> {{ call.done.date }} von {{ call.done.user.fullname }}
 			{% endif %}
 		</div>
 	</div>
